@@ -7,7 +7,7 @@ export default class Button extends PureComponent {
 
     return (
       <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-        <Text>{children}</Text>
+        <Text style={styles.text}>{children}</Text>
       </TouchableOpacity>
     );
   }
@@ -15,10 +15,13 @@ export default class Button extends PureComponent {
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 4,
-    backgroundColor: '#0094EA',
+    borderRadius: 6,
+    backgroundColor: '#B0C4DE',
     padding: 10,
     alignItems: 'center',
-    color: '#FFFFFF',
+  },
+  text: {
+    color: '#000000',
+    fontSize: 18,
   },
 });
