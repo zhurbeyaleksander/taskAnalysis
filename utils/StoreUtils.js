@@ -21,6 +21,7 @@ async function setData(key, value) {
 async function getDate(key) {
   try {
     const value = await AsyncStorage.getItem(key);
+    console.log(value);
     if (value !== null) {
       console.log(value);
     }
