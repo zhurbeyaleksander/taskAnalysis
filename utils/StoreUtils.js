@@ -10,11 +10,21 @@ export function dispatchStore(actionType, key, value) {
   }
 }
 
-function setData(key, value) {
-  AsyncStorage.setItem(key, value);
+async function setData(key, value) {
+  try {
+    await AsyncStorage.setItem(key, value);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function getDate(key) {
-  const value = AsyncStorage.getItem(key);
-  alert(value);
+async function getDate(key) {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      console.log(value);
+    }
+  } catch (error) {
+    console.log(`Ошибка ${error}`);
+  }
 }
