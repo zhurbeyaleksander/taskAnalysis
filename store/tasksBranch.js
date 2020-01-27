@@ -6,6 +6,7 @@ const GET_DATA_ERROR = 'GET_DATA_ERROR';
 
 const initialState = {
   yearData: null,
+  currentMonthData: null,
   isLoading: false,
 };
 
@@ -35,4 +36,8 @@ export function tasksReducer(state = initialState, action) {
     default:
       return state;
   }
+}
+
+export function getYearData() {
+  console.log('Что-то произошло');
 }

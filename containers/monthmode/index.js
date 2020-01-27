@@ -1,1 +1,1 @@
-export {default as Monthmode} from './Monthmode';
+export {MonthScreen} from './Monthmode';

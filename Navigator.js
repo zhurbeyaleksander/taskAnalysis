@@ -1,11 +1,12 @@
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
-import {Monthmode, Weekmode} from './containers';
+import {Weekmode} from './containers';
+import {MonthScreen} from './containers/monthmode';
 
 const RootStack = createStackNavigator(
   {
-    Month: Monthmode,
+    Month: MonthScreen,
     Week: Weekmode,
   },
   {

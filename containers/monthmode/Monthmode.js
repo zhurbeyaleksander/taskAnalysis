@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {Button} from '../../components/Button/index';
 import {dispatchStore} from '../../utils/StoreUtils';
+import {connect} from 'react-redux';
 
-export default class Monthmode extends Component {
+class Monthmode extends Component {
   render() {
     return (
       <View>
@@ -21,3 +22,11 @@ export default class Monthmode extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    isLoading: state.tasksReducer.isLoading,
+  };
+};
+
+export const MonthScreen = connect(mapStateToProps)(Monthmode);
