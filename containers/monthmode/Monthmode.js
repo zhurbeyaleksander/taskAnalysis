@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {Button} from '../../components/Button/index';
 import {Spinner} from '../../components/Spinner/index';
+import {Day} from '../../components/Day/index';
 import {dispatchStore} from '../../utils/StoreUtils';
 import {connect} from 'react-redux';
 
@@ -20,6 +21,7 @@ class Monthmode extends Component {
           Посмотреть имя
         </Button>
         <Spinner />
+        <Day date={23} style={'partResult'} />
       </View>
     );
   }
