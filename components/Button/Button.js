@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {TouchableOpacity, StyleSheet, Text} from 'react-native';
 
-export default class Button extends PureComponent {
+export default class Button extends Component {
   render() {
     const {style, children, onPress} = this.props;
 

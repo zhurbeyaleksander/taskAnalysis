@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {Button} from '../../components/Button/index';
+import {Spinner} from '../../components/Spinner/index';
 import {dispatchStore} from '../../utils/StoreUtils';
 import {connect} from 'react-redux';
 
@@ -18,6 +19,7 @@ class Monthmode extends Component {
         <Button onPress={() => dispatchStore('getData', 'name')}>
           Посмотреть имя
         </Button>
+        <Spinner />
       </View>
     );
   }
