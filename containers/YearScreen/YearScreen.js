@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 
 class Year extends Component {
   render() {
-    return <Month />;
+    const date = new Date(2020, 0, 1);
+    return <Month date={date} />;
   }
 }
 
