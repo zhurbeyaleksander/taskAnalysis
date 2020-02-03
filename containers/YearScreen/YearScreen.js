@@ -4,8 +4,9 @@ import {connect} from 'react-redux';
 
 class Year extends Component {
   render() {
-    const date = new Date(2020, 0, 1);
-    return <Month date={date} />;
+    const date = new Date(2020, 1, 1);
+    const date2 = new Date(2020, 2, 1);
+    return [<Month date={date} />, <Month date={date2} />];
   }
 }
 
@@ -14,5 +15,6 @@ const mapStateToProps = state => {
     isLoading: state.tasksReducer.isLoading,
   };
 };
+
 
 export const YearScreen = connect(mapStateToProps)(Year);
