@@ -30,28 +30,30 @@ export default class Month extends Component {
     const monthNumber = date && date.getMonth();
     const year = date && date.getFullYear();
     const month = date && date.getMonth();
-    let days = date && daysInMonth[month];
+    let days = daysInMonth[month];
     if (this.isLeapYear(year) && month === 1) days = 29;
-    let ViewDays = [];
+
+    let CellDays = [];
     const dayOfStartWeek = this.getDayOfStartWeek(date && date.getDay());
+
     for (let i = 1; i < dayOfStartWeek; i++) {
-      ViewDays.push('.');
+      CellDays.push('');
     }
 
     for (let i = 1; i <= days; i++) {
-      ViewDays.push(i);
+      CellDays.push(i);
     }
 
-    const createArrayOfWeeks = ViewDays.map((i, index) => {
+    const createArrayOfWeeks = CellDays.map((i, index) => {
       let workWeek = [];
       const day = isNumber(i) ? i : null;
       const currentDay = new Date(year, monthNumber, day);
       if (index === 0) {
-        workWeek = ViewDays.slice(index, index + 7);
+        workWeek = CellDays.slice(index, index + 7);
         return this.createWeek(workWeek);
       }
       if (currentDay.getDay() === 1) {
-        workWeek = ViewDays.slice(index, index + 7);
+        workWeek = CellDays.slice(index, index + 7);
         return this.createWeek(workWeek);
       }
     });
