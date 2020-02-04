@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import {Day} from '../../components/Day/index';
 import {isNumber} from 'lodash';
 
@@ -9,6 +9,20 @@ export default class Month extends Component {
     this.state = {
       date: null,
       daysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+      monthTitle: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
     };
   }
 
@@ -33,7 +47,7 @@ export default class Month extends Component {
   };
 
   createMonth = () => {
-    const {date, daysInMonth} = this.state;
+    const {date, daysInMonth, monthTitle} = this.state;
 
     const monthNumber = date && date.getMonth();
     const year = date && date.getFullYear();
@@ -67,7 +81,7 @@ export default class Month extends Component {
       }
     });
 
-    return createArrayOfWeeks;
+    return [<Text>{monthTitle[month]}</Text>, createArrayOfWeeks];
   };
 
   createWeek = week => {
@@ -83,7 +97,7 @@ export default class Month extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.monthWrap}>{this.createMonth()}</ScrollView>
+    <ScrollView style={styles.monthWrap}>{this.createMonth()}</ScrollView>
     );
   }
 }
