@@ -18,6 +18,14 @@ export default class Month extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.date !== prevProps.date) {
+    this.setState({
+        date: this.props.date,
+      });
+    }
+  }
+
   getDayOfStartWeek = day => {
     let dayOfStartWeek = day;
     if (dayOfStartWeek === 0) dayOfStartWeek = 7;
@@ -36,6 +44,7 @@ export default class Month extends Component {
     let CellDays = [];
     const dayOfStartWeek = this.getDayOfStartWeek(date && date.getDay());
 
+    // Push blank cells
     for (let i = 1; i < dayOfStartWeek; i++) {
       CellDays.push('');
     }
