@@ -43,9 +43,8 @@ class Year extends Component {
   createRowOfMonth = monthNumbers => {
     const {year} = this.state;
     const RowOfMonth = monthNumbers.map((monthNumber, index) => {
-      console.log(monthNumber)
       const date = new Date(year, monthNumber, 1);
-      return <Month date={date} />;
+      return <Month date={date} mode={'small'} />;
     });
 
     return <View style={styles.threeMonths}>{RowOfMonth}</View>;

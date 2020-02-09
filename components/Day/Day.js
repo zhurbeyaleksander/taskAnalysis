@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import {get} from 'lodash';
+import * as moment from 'moment';
+import {utc} from 'moment';
 
 export default class Day extends Component {
+  isToday = () => {
+    const {day} = this.props;
+    const currentDay = new Date();
+    return utc(currentDay).format('YYYY-MM-DD') === utc(day).format('YYYY-MM-DD');
+  };
+
   render() {
-    const {date, style} = this.props;
-    const dayStyle = get(styles, `${style}`, 'noResult');
+    const {date, style, mode} = this.props;
+    const isToday = this.isToday();
+    const dayStyle = isToday ? get(styles, 'todaySmall', 'noResult') : get(styles, `${style}`, 'noResult');
     return <Text style={dayStyle}>{date}</Text>;
   }
 }
@@ -43,6 +52,18 @@ const styles = StyleSheet.create({
     paddingTop: 1,
     width: 15,
     height: 20,
+    textAlign: 'center',
+    marginLeft: 2,
+    fontSize: 10,
+  },
+  todaySmall: {
+    backgroundColor: '#B0C4DE',
+    color: '#ffffff',
+    borderBottomColor: '#B0C4DE',
+    borderBottomWidth: 2,
+    paddingTop: 1,
+    width: 15,
+    height: 17,
     textAlign: 'center',
     marginLeft: 2,
     fontSize: 10,

@@ -23,12 +23,14 @@ export default class Month extends Component {
         'Ноябрь',
         'Декабрь',
       ],
+      mode: null,
     };
   }
 
   componentDidMount() {
     this.setState({
       date: this.props.date,
+      mode: this.props.mode,
     });
   }
 
@@ -73,11 +75,19 @@ export default class Month extends Component {
       const currentDay = new Date(year, monthNumber, day);
       if (index === 0) {
         workWeek = CellDays.slice(index, index + 7);
-        return this.createWeek(workWeek);
+        const workWeekWithData = workWeek.map(j => {
+          const currentDate = new Date(year, monthNumber, j);
+          return {dayNumber: j, currentDate: currentDate};
+        });
+        return this.createWeek(workWeekWithData);
       }
       if (currentDay.getDay() === 1) {
         workWeek = CellDays.slice(index, index + 7);
-        return this.createWeek(workWeek);
+        const workWeekWithData = workWeek.map(j => {
+          const currentDate = new Date(year, monthNumber, j);
+          return {dayNumber: j, currentDate: currentDate};
+        });
+        return this.createWeek(workWeekWithData);
       }
     });
 
@@ -85,8 +95,17 @@ export default class Month extends Component {
   };
 
   createWeek = week => {
+    const {mode} = this.state;
     const newWeek = week.map((i, index) => {
-      return <Day key={index} style={'noMarkedSmall'} date={i} />;
+      return (
+        <Day
+          key={index}
+          style={'noMarkedSmall'}
+          date={i.dayNumber}
+          mode={mode}
+          day={i.currentDate}
+        />
+      );
     });
     return <View style={styles.weekWrap}>{newWeek}</View>;
   };
