@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Month} from '../../components/Month/index';
 import {connect} from 'react-redux';
 import {ScrollView, View, StyleSheet} from 'react-native';
+import {ETypeMonth} from '../../models/appModels';
 
 class Year extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class Year extends Component {
     const {year} = this.state;
     const RowOfMonth = monthNumbers.map((monthNumber, index) => {
       const date = new Date(year, monthNumber, 1);
-      return <Month date={date} mode={'small'} />;
+      return <Month date={date} mode={ETypeMonth.SMALL} />;
     });
 
     return <View style={styles.threeMonths}>{RowOfMonth}</View>;
