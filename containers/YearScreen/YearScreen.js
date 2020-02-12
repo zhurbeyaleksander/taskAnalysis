@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Month} from '../../components/Month/index';
 import {connect} from 'react-redux';
-import {ScrollView, View, StyleSheet} from 'react-native';
+import {ScrollView, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {ETypeMonth} from '../../models/appModels';
 
 class Year extends Component {
@@ -17,6 +17,10 @@ class Year extends Component {
     this.setState({
       year: year,
     });
+  }
+
+  onPress(date) {
+    this.props.navigation.navigate('Month', {date: date});
   }
 
   renderMonths = () => {
@@ -45,7 +49,11 @@ class Year extends Component {
     const {year} = this.state;
     const RowOfMonth = monthNumbers.map((monthNumber, index) => {
       const date = new Date(year, monthNumber, 1);
-      return <Month date={date} mode={ETypeMonth.SMALL} />;
+      return (
+        <TouchableOpacity onPress={() => this.onPress(date)}>
+          <Month date={date} mode={ETypeMonth.SMALL} />
+        </TouchableOpacity>
+      );
     });
 
     return <View style={styles.threeMonths}>{RowOfMonth}</View>;
