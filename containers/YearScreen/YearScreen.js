@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   year: {
     flex: 1,
     flexDirection: 'column',
+    margin: 15,
   },
   threeMonths: {
     flex: 1,
