@@ -78,4 +78,14 @@ const styles = StyleSheet.create({
     marginLeft: 2,
     fontSize: 10,
   },
+  noMarkedBig: {
+    backgroundColor: '#ffffff',
+    color: '#000000',
+    paddingTop: 1,
+    width: 55,
+    height: 60,
+    textAlign: 'center',
+    marginLeft: 2,
+    fontSize: 20,
+  },
 });

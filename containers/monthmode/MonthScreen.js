@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {Button} from '../../components/Button/index';
-import {Spinner} from '../../components/Spinner/index';
-import {Day} from '../../components/Day/index';
-import {dispatchStore} from '../../utils/StoreUtils';
 import {connect} from 'react-redux';
+import {Month} from '../../components/Month/index';
+import {ETypeMonth} from '../../models/appModels';
 
 class MonthScreenClass extends Component {
   render() {
-    return (
-      <View>
-        <Text>Режим месяца</Text>
-      </View>
-    );
+    const {date} = this.props.route.params;
+    return <Month date={date} mode={ETypeMonth.BIG} />;
   }
 }
 

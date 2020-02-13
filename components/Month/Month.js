@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import {Day} from '../../components/Day/index';
 import {isNumber} from 'lodash';
+import {ETypeMonth} from '../../models/appModels';
 
 export default class Month extends Component {
   constructor(props) {
@@ -97,10 +98,11 @@ export default class Month extends Component {
   createWeek = week => {
     const {mode} = this.state;
     const newWeek = week.map((i, index) => {
+      const style = mode === ETypeMonth.BIG ? 'noMarkedBig' : 'noMarkedSmall';
       return (
         <Day
           key={index}
-          style={'noMarkedSmall'}
+          style={style}
           date={i.dayNumber}
           mode={mode}
           day={i.currentDate}
