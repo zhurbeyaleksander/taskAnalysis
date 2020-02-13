@@ -129,5 +129,8 @@ const styles = StyleSheet.create({
   monthWrap: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: '#ffffff',
+    margin: 5,
+    padding: 2,
   },
 });
