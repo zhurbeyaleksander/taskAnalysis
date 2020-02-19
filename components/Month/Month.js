@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import {Day} from '../../components/Day/index';
-import {isNumber} from 'lodash';
+import {isNumber, get} from 'lodash';
 import {ETypeMonth} from '../../models/appModels';
 
 export default class Month extends Component {
@@ -50,7 +50,7 @@ export default class Month extends Component {
   };
 
   createMonth = () => {
-    const {date, daysInMonth, monthTitle} = this.state;
+    const {date, daysInMonth, monthTitle, mode} = this.state;
 
     const monthNumber = date && date.getMonth();
     const year = date && date.getFullYear();
@@ -92,7 +92,9 @@ export default class Month extends Component {
       }
     });
 
-    return [<Text>{monthTitle[month]}</Text>, createArrayOfWeeks];
+    const monthStyle = mode === ETypeMonth.BIG ? get(styles, 'monthTitle') : get(styles, 'monthTitleSmall');
+
+    return [<Text style={monthStyle}>{monthTitle[month]}</Text>, createArrayOfWeeks];
   };
 
   createWeek = week => {
@@ -118,7 +120,7 @@ export default class Month extends Component {
 
   render() {
     return (
-    <ScrollView style={styles.monthWrap}>{this.createMonth()}</ScrollView>
+      <ScrollView style={styles.monthWrap}>{this.createMonth()}</ScrollView>
     );
   }
 }
@@ -132,7 +134,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#ffffff',
-    margin: 5,
-    padding: 2,
+    margin: 3,
+    padding: 1,
+  },
+  monthTitle: {
+    fontSize: 22,
+  },
+  monthTitleSmall: {
+    fontSize: 13,
   },
 });

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import {get} from 'lodash';
-import * as moment from 'moment';
 import {utc} from 'moment';
+import {ETypeMonth} from '../../models/appModels';
 
 export default class Day extends Component {
   isToday = () => {
@@ -14,7 +14,11 @@ export default class Day extends Component {
   render() {
     const {date, style, mode} = this.props;
     const isToday = this.isToday();
-    const dayStyle = isToday ? get(styles, 'todaySmall', 'noResult') : get(styles, `${style}`, 'noResult');
+    const dayStyle = isToday
+      ? mode === ETypeMonth.BIG
+        ? get(styles, 'todayBig', 'noResult')
+        : get(styles, 'todaySmall', 'noResult')
+      : get(styles, `${style}`, 'noResult');
     return <Text style={dayStyle}>{date}</Text>;
   }
 }
@@ -67,6 +71,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 2,
     fontSize: 10,
+  },
+  todayBig: {
+    backgroundColor: '#B0C4DE',
+    color: '#ffffff',
+    paddingTop: 1,
+    width: 55,
+    height: 30,
+    textAlign: 'center',
+    marginLeft: 2,
+    fontSize: 20,
   },
   noMarkedSmall: {
     backgroundColor: '#ffffff',
