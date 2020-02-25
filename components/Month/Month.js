@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {Day} from '../../components/Day/index';
 import {isNumber, get} from 'lodash';
 import {ETypeMonth} from '../../models/appModels';
@@ -37,7 +43,7 @@ export default class Month extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.date !== prevProps.date) {
-    this.setState({
+      this.setState({
         date: this.props.date,
       });
     }
@@ -48,6 +54,10 @@ export default class Month extends Component {
     if (dayOfStartWeek === 0) dayOfStartWeek = 7;
     return dayOfStartWeek;
   };
+
+  onPress(data) {
+    this.props.onPress('coco');
+  }
 
   createMonth = () => {
     const {date, daysInMonth, monthTitle, mode} = this.state;
@@ -101,15 +111,29 @@ export default class Month extends Component {
     const {mode} = this.state;
     const newWeek = week.map((i, index) => {
       const style = mode === ETypeMonth.BIG ? 'noMarkedBig' : 'noMarkedSmall';
-      return (
-        <Day
-          key={index}
-          style={style}
-          date={i.dayNumber}
-          mode={mode}
-          day={i.currentDate}
-        />
-      );
+      if (mode === ETypeMonth.BIG) {
+        return (
+          <TouchableOpacity onPress={() => this.onPress(i)}>
+            <Day
+              key={index}
+              style={style}
+              date={i.dayNumber}
+              mode={mode}
+              day={i.currentDate}
+            />
+          </TouchableOpacity>
+        );
+      } else {
+        return (
+          <Day
+            key={index}
+            style={style}
+            date={i.dayNumber}
+            mode={mode}
+            day={i.currentDate}
+          />
+        );
+      }
     });
     return <View style={styles.weekWrap}>{newWeek}</View>;
   };

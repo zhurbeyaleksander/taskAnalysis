@@ -20,8 +20,16 @@ class Year extends Component {
   }
 
   onPress(date) {
-    this.props.navigation.navigate('Month', {date: date});
+    this.props.navigation.navigate('Month', {
+      date: date,
+      onPress: this.onPressFromMonthComponent,
+    });
   }
+
+  onPressFromMonthComponent = data => {
+    console.log(data);
+    this.props.navigation.navigate('Day');
+  };
 
   renderMonths = () => {
     let rowArrayOfMonth = [];
@@ -51,7 +59,11 @@ class Year extends Component {
       const date = new Date(year, monthNumber, 1);
       return (
         <TouchableOpacity onPress={() => this.onPress(date)}>
-          <Month date={date} mode={ETypeMonth.SMALL} />
+          <Month
+            date={date}
+            mode={ETypeMonth.SMALL}
+            onPress={this.onPressFromMonthComponent}
+          />
         </TouchableOpacity>
       );
     });
