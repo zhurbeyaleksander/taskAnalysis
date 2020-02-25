@@ -7,7 +7,6 @@ import {ETypeMonth} from '../../models/appModels';
 class MonthScreenClass extends Component {
   render() {
     const {date, onPress} = this.props.route.params;
-    console.log(onPress);
     return <Month date={date} mode={ETypeMonth.BIG} onPress={onPress}/>;
   }
 }

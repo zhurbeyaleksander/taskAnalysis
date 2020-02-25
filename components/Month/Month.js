@@ -56,7 +56,7 @@ export default class Month extends Component {
   };
 
   onPress(data) {
-    this.props.onPress('coco');
+    this.props.onPress(data);
   }
 
   createMonth = () => {

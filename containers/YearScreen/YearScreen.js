@@ -27,8 +27,7 @@ class Year extends Component {
   }
 
   onPressFromMonthComponent = data => {
-    console.log(data);
-    this.props.navigation.navigate('Day');
+    this.props.navigation.navigate('Day', {data: data});
   };
 
   renderMonths = () => {
