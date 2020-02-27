@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {MonthScreen} from './containers/MonthScreen';
 import {YearScreen} from './containers/YearScreen';
 import {DayScreen} from './containers/DayScreen';
+import {AddTaskScreen} from './containers/AddTaskScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const RootStack = () => {
         <Stack.Screen name="Year" component={YearScreen} />
         <Stack.Screen name="Month" component={MonthScreen} />
         <Stack.Screen name="Day" component={DayScreen} />
+        <Stack.Screen name="AddTask" component={AddTaskScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

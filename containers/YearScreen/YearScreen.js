@@ -32,7 +32,7 @@ class Year extends Component {
   };
 
   onPressAddButton = () => {
-    console.log('add');
+    this.props.navigation.navigate('AddTask');
   };
 
   renderMonths = () => {
@@ -112,4 +112,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 });
+
 export const YearScreen = connect(mapStateToProps)(Year);
