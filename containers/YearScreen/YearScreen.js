@@ -3,6 +3,7 @@ import {Month} from '../../components/Month/index';
 import {connect} from 'react-redux';
 import {ScrollView, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {ETypeMonth} from '../../models/appModels';
+import {Button} from '../../components/Button/index';
 
 class Year extends Component {
   constructor(props) {
@@ -28,6 +29,10 @@ class Year extends Component {
 
   onPressFromMonthComponent = data => {
     this.props.navigation.navigate('Day', {data: data});
+  };
+
+  onPressAddButton = () => {
+    console.log('add');
   };
 
   renderMonths = () => {
@@ -72,7 +77,14 @@ class Year extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.year}>{this.renderMonths()}</ScrollView>
+      <View style={styles.content}>
+        <View style={styles.year}>
+          <ScrollView>{this.renderMonths()}</ScrollView>
+        </View>
+        <View style={styles.buttonArea}>
+          <Button onPress={this.onPressAddButton}>Добавить</Button>
+        </View>
+      </View>
     );
   }
 }
@@ -85,8 +97,14 @@ const mapStateToProps = state => {
 
 const styles = StyleSheet.create({
   year: {
+    flex: 9,
+    margin: 15,
+  },
+  content: {
     flex: 1,
-    flexDirection: 'column',
+  },
+  buttonArea: {
+    flex: 1,
     margin: 15,
   },
   threeMonths: {

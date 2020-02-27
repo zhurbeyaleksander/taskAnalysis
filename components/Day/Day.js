@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   todaySmall: {
     backgroundColor: '#B0C4DE',
-    color: '#ffffff',
+    color: '#000000',
     borderBottomColor: '#B0C4DE',
     borderBottomWidth: 2,
     paddingTop: 1,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   todayBig: {
     backgroundColor: '#B0C4DE',
-    color: '#ffffff',
+    color: '#000000',
     paddingTop: 1,
     width: 55,
     height: 30,
