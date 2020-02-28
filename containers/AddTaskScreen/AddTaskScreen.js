@@ -132,13 +132,27 @@ class AddTask extends Component {
     );
   };
 
+  setTitle = () => e => {
+    const value = e.nativeEvent.text;
+
+    this.setState({
+      taskTitle: value,
+    });
+  };
+
   render() {
+    const {taskTitle} = this.state;
+
     return (
       <ScrollView>
         <View style={styles.content}>
           <View style={styles.taskTitle}>
             <Text style={styles.textTaskTitle}>Заголовок задачи</Text>
-            <TextInput style={styles.textInput} />
+            <TextInput 
+              style={styles.textInput}
+              value={taskTitle}
+              onChange={this.setTitle()}
+            />
           </View>
           <View style={styles.weekDays}>
             <Text style={styles.textTaskTitle}>Дни недели</Text>
