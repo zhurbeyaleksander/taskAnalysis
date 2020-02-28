@@ -18,6 +18,8 @@ class AddTask extends Component {
         sa: 0,
         su: 0,
       },
+      weekDaysSwitch: 0,
+      weekendSwitch: 0,
     };
   }
 
@@ -25,9 +27,37 @@ class AddTask extends Component {
     const {daysToDo} = this.state;
     const arrayForCheck = Object.keys(daysToDo);
     const newState = cloneDeep(this.state);
+    let key;
     if (arrayForCheck.some(el => el === name)) {
       set(newState, `daysToDo.${name}`, e === 1 ? 0 : 1);
+      set(newState, 'weekDaysSwitch', 0);
+      set(newState, 'weekendSwitch', 0);
     }
+
+    if (name === 'weekDays') {
+      for (key in daysToDo) {
+        if (key !== 'sa' && key !== 'su') {
+          set(newState, `daysToDo.${key}`, e === 1 ? 0 : 1);
+        }
+      }
+      set(newState, 'daysToDo.sa', 0);
+      set(newState, 'daysToDo.su', 0);
+      set(newState, 'weekendSwitch', 0);
+      set(newState, 'weekDaysSwitch', e === 1 ? 0 : 1);
+    }
+
+    if (name === 'weekend') {
+      for (key in daysToDo) {
+        if (key !== 'sa' && key !== 'su') {
+          set(newState, `daysToDo.${key}`, 0);
+        }
+      }
+      set(newState, 'weekDaysSwitch', 0);
+      set(newState, 'daysToDo.sa', e === 1 ? 0 : 1);
+      set(newState, 'daysToDo.su', e === 1 ? 0 : 1);
+      set(newState, 'weekendSwitch', e === 1 ? 0 : 1);
+    }
+
     this.setState(newState);
   };
 
@@ -76,17 +106,28 @@ class AddTask extends Component {
   };
 
   renderOnlyWeekDaysButton = () => {
+    const {weekDaysSwitch} = this.state;
     return (
       <View style={styles.weekDaysSwitchButtons}>
-        <SwitchButton isActive={0}>Только будни</SwitchButton>
+        <SwitchButton 
+          isActive={weekDaysSwitch} 
+          onPress={this.pressOnDayButton('weekDays')}>
+          Только будни
+        </SwitchButton>
       </View>
     );
   };
 
-  renderWeekEndButton = () => {
+  renderweekEndButton = () => {
+    const {weekendSwitch} = this.state;
+
     return (
       <View style={styles.weekDaysSwitchButtons}>
-        <SwitchButton isActive={0}>Только выходные</SwitchButton>
+        <SwitchButton 
+          isActive={weekendSwitch} 
+          onPress={this.pressOnDayButton('weekend')}>
+          Только выходные
+        </SwitchButton>
       </View>
     );
   };
@@ -103,7 +144,7 @@ class AddTask extends Component {
             <Text style={styles.textTaskTitle}>Дни недели</Text>
             {this.renderWeekDaysButtons()}
             {this.renderOnlyWeekDaysButton()}
-            {this.renderWeekEndButton()}
+            {this.renderweekEndButton()}
           </View>
           <View style={styles.addButton}>
             <Button>Добавить</Button>
