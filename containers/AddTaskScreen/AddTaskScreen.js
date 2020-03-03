@@ -20,6 +20,7 @@ class AddTask extends Component {
       },
       weekDaysSwitch: 0,
       weekendSwitch: 0,
+      repeat: 1,
     };
   }
 
@@ -140,15 +141,28 @@ class AddTask extends Component {
     });
   };
 
+  setRepeat = argument => e => {
+    const {repeat} = this.state;
+
+    let newValue = argument === 'plus' ? repeat + 1 : repeat - 1;
+    if (newValue <= 0) {
+      newValue = 1;
+    } 
+
+    this.setState({
+      repeat: newValue,
+    });
+  }
+
   render() {
-    const {taskTitle} = this.state;
+    const {taskTitle, repeat} = this.state;
 
     return (
       <ScrollView>
         <View style={styles.content}>
           <View style={styles.taskTitle}>
             <Text style={styles.textTaskTitle}>Заголовок задачи</Text>
-            <TextInput 
+            <TextInput
               style={styles.textInput}
               value={taskTitle}
               onChange={this.setTitle()}
@@ -159,6 +173,19 @@ class AddTask extends Component {
             {this.renderWeekDaysButtons()}
             {this.renderOnlyWeekDaysButton()}
             {this.renderweekEndButton()}
+          </View>
+          <View style={styles.repeatButtons}>
+            <Text style={styles.textTaskTitle}>Количество повторений</Text>
+            <View style={styles.repeatButtonRow}>
+              <Button 
+              style={styles.plusAndMinusButton}
+              onPress={this.setRepeat('minus')}
+              >-</Button>
+              <Text style={styles.repeatNumber}>{repeat}</Text>
+              <Button 
+              style={styles.plusAndMinusButton}
+              onPress={this.setRepeat('plus')}>+</Button>
+              </View>
           </View>
           <View style={styles.addButton}>
             <Button>Добавить</Button>
@@ -198,6 +225,26 @@ const styles = StyleSheet.create({
   weekDaysSwitchButtons: {
     flex: 1,
     flexDirection: 'row',
+    marginTop: 5,
+  },
+  repeatButtons: {
+    flex: 1,
+    margin: 15,
+    backgroundColor: '#ffffff',
+    padding: 20,
+  },
+  repeatButtonRow: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  plusAndMinusButton: {
+    width: 40,
+    marginRight: 20,
+  },
+  repeatNumber: {
+    width: 30,
+    fontSize: 22,
     marginTop: 5,
   },
   addButton: {
