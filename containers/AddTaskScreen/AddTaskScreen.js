@@ -203,7 +203,7 @@ class AddTask extends Component {
             </View>
           </View>
           <View style={styles.addButton}>
-            <Button onPress={this.addTask()}>Добавить</Button>
+            <Button onPress={this.addTask}>Добавить</Button>
           </View>
         </View>
       </ScrollView>
