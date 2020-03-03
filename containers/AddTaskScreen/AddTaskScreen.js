@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TextInput, ScrollView} from 'react-native';
 import {Button} from '../../components/Button';
 import {SwitchButton} from '../../components/Button';
 import {set, cloneDeep} from 'lodash';
+import {dispatchStore} from '../../utils/StoreUtils';
 
 class AddTask extends Component {
   constructor(props) {
@@ -110,8 +111,8 @@ class AddTask extends Component {
     const {weekDaysSwitch} = this.state;
     return (
       <View style={styles.weekDaysSwitchButtons}>
-        <SwitchButton 
-          isActive={weekDaysSwitch} 
+        <SwitchButton
+          isActive={weekDaysSwitch}
           onPress={this.pressOnDayButton('weekDays')}>
           Только будни
         </SwitchButton>
@@ -124,8 +125,8 @@ class AddTask extends Component {
 
     return (
       <View style={styles.weekDaysSwitchButtons}>
-        <SwitchButton 
-          isActive={weekendSwitch} 
+        <SwitchButton
+          isActive={weekendSwitch}
           onPress={this.pressOnDayButton('weekend')}>
           Только выходные
         </SwitchButton>
@@ -147,12 +148,23 @@ class AddTask extends Component {
     let newValue = argument === 'plus' ? repeat + 1 : repeat - 1;
     if (newValue <= 0) {
       newValue = 1;
-    } 
+    }
 
     this.setState({
       repeat: newValue,
     });
-  }
+  };
+
+  addTask = () => {
+    const {taskTitle, daysToDo, repeat} = this.state;
+    const data = {
+      taskTitle: taskTitle,
+      daysToDo: daysToDo,
+      repeat: repeat,
+    };
+
+    dispatchStore('setData', taskTitle, data);
+  };
 
   render() {
     const {taskTitle, repeat} = this.state;
@@ -177,18 +189,21 @@ class AddTask extends Component {
           <View style={styles.repeatButtons}>
             <Text style={styles.textTaskTitle}>Количество повторений</Text>
             <View style={styles.repeatButtonRow}>
-              <Button 
-              style={styles.plusAndMinusButton}
-              onPress={this.setRepeat('minus')}
-              >-</Button>
+              <Button
+                style={styles.plusAndMinusButton}
+                onPress={this.setRepeat('minus')}>
+                -
+              </Button>
               <Text style={styles.repeatNumber}>{repeat}</Text>
-              <Button 
-              style={styles.plusAndMinusButton}
-              onPress={this.setRepeat('plus')}>+</Button>
-              </View>
+              <Button
+                style={styles.plusAndMinusButton}
+                onPress={this.setRepeat('plus')}>
+                +
+              </Button>
+            </View>
           </View>
           <View style={styles.addButton}>
-            <Button>Добавить</Button>
+            <Button onPress={this.addTask()}>Добавить</Button>
           </View>
         </View>
       </ScrollView>
