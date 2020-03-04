@@ -25,14 +25,22 @@ async function setData(
   dispatch: any,
   funcName: string,
 ) {
-  console.log(key);
   try {
+    checkKeyBeforeSave(key, dispatch, funcName);
     await AsyncStorage.setItem(key, JSON.stringify(value));
     dispatch((actionBuilder[`${funcName}Success`] as Function)());
     getAllKeys();
   } catch (error) {
     console.log(error);
     dispatch((actionBuilder[`${funcName}Error`] as Function)());
+  }
+}
+
+async function checkKeyBeforeSave(key: string, dispatch: any, funcName: string) {
+  try {
+    let compareItem = await AsyncStorage.getItem(key);
+  } catch (error) {
+    console.log(error);
   }
 }
 
