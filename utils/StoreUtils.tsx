@@ -1,21 +1,38 @@
 import {AsyncStorage} from 'react-native';
 
-export function dispatchStore(actionType, key, value) {
+export function dispatchStore(
+  dispatch: any,
+  actionType: string,
+  key: string,
+  value: Object,
+  funcName: string,
+  actionBuilder: Object,
+) {
   switch (actionType) {
     case 'setData':
-      setData(key, value);
-      getAllKeys();
+      dispatch((actionBuilder[`${funcName}Loading`] as Function)());
+      setData(key, value, actionBuilder, dispatch, funcName);
       break;
     case 'getData':
       getDate(key);
   }
 }
 
-async function setData(key, value) {
+async function setData(
+  key: string,
+  value: Object,
+  actionBuilder: Object,
+  dispatch: any,
+  funcName: string,
+) {
+  console.log(key);
   try {
     await AsyncStorage.setItem(key, JSON.stringify(value));
+    dispatch((actionBuilder[`${funcName}Success`] as Function)());
+    getAllKeys();
   } catch (error) {
     console.log(error);
+    dispatch((actionBuilder[`${funcName}Error`] as Function)());
   }
 }
 

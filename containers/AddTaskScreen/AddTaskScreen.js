@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {View, Text, StyleSheet, TextInput, ScrollView} from 'react-native';
 import {Button} from '../../components/Button';
 import {SwitchButton} from '../../components/Button';
 import {set, cloneDeep} from 'lodash';
 import {dispatchStore} from '../../utils/StoreUtils';
+import {addTask} from '../../store/addTaskBranch';
 
 class AddTask extends Component {
   constructor(props) {
@@ -163,7 +165,7 @@ class AddTask extends Component {
       repeat: repeat,
     };
 
-    dispatchStore('setData', taskTitle, data);
+    this.props.actions.addTask(data);
   };
 
   render() {
@@ -268,4 +270,22 @@ const styles = StyleSheet.create({
   },
 });
 
-export const AddTaskScreen = AddTask;
+const mapStateToProps = state => {
+  return {
+    isLoading: state.addTaskReducer.isLoading,
+    isAddSuccess: state.addTaskReducer.isAddSuccess,
+    error: state.addTaskReducer.error,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: {
+      addTask: taskData => {
+        dispatch(addTask(taskData));
+      },
+    },
+  };
+};
+
+export const AddTaskScreen = connect(mapStateToProps, mapDispatchToProps)(AddTask);
