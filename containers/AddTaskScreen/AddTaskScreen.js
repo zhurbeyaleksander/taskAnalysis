@@ -4,8 +4,7 @@ import {View, Text, StyleSheet, TextInput, ScrollView} from 'react-native';
 import {Button} from '../../components/Button';
 import {SwitchButton} from '../../components/Button';
 import {set, cloneDeep} from 'lodash';
-import {dispatchStore} from '../../utils/StoreUtils';
-import {addTask} from '../../store/addTaskBranch';
+import {addTask, resetProps} from '../../store/addTaskBranch';
 
 class AddTask extends Component {
   constructor(props) {
@@ -25,6 +24,10 @@ class AddTask extends Component {
       weekendSwitch: 0,
       repeat: 1,
     };
+  }
+
+  componentWillUnmount() {
+    this.props.actions.resetProps();
   }
 
   pressOnDayButton = name => e => {
@@ -168,7 +171,7 @@ class AddTask extends Component {
     this.props.actions.addTask(data);
   };
 
-  render() {
+  renderMainContent = () => {
     const {taskTitle, repeat} = this.state;
 
     return (
@@ -210,6 +213,16 @@ class AddTask extends Component {
         </View>
       </ScrollView>
     );
+  };
+
+  succsessAdd = () => {
+    return <Text>Задача успешно добавлена в список</Text>;
+  };
+
+  render() {
+    const {isAddSuccess} = this.props;
+
+    return isAddSuccess ? this.succsessAdd() : this.renderMainContent();
   }
 }
 
@@ -283,6 +296,9 @@ const mapDispatchToProps = dispatch => {
     actions: {
       addTask: taskData => {
         dispatch(addTask(taskData));
+      },
+      resetProps: () => {
+        dispatch(resetProps());
       },
     },
   };

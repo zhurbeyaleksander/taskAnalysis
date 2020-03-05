@@ -1,4 +1,5 @@
 import {AsyncStorage} from 'react-native';
+import {isNil} from 'lodash';
 
 export function dispatchStore(
   dispatch: any,
@@ -26,10 +27,15 @@ async function setData(
   funcName: string,
 ) {
   try {
-    checkKeyBeforeSave(key, dispatch, funcName);
-    await AsyncStorage.setItem(key, JSON.stringify(value));
-    dispatch((actionBuilder[`${funcName}Success`] as Function)());
-    getAllKeys();
+    const objectFromStorageByKey = await AsyncStorage.getItem(key);
+    if (isNil(objectFromStorageByKey)) {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+      dispatch((actionBuilder[`${funcName}Success`] as Function)());
+      getAllKeys();
+    } else {
+      const error = 'Задача с таким названием уже существует';
+      dispatch((actionBuilder[`${funcName}Error`] as Function)(error));
+    }
   } catch (error) {
     console.log(error);
     dispatch((actionBuilder[`${funcName}Error`] as Function)());
@@ -38,10 +44,20 @@ async function setData(
 
 async function checkKeyBeforeSave(key: string, dispatch: any, funcName: string) {
   try {
+    let a = 1;
     let compareItem = await AsyncStorage.getItem(key);
+    let newValue = JSON.parse(compareItem);
+    console.log('------------------')
+    console.log(newValue);
+    console.log('-------------------')
+    if (newValue.taskTitle === key) {
+      return Promise.resolve(true);
+    }
+    return Promise.resolve(true);
   } catch (error) {
     console.log(error);
   }
+  return Promise.resolve(true);
 }
 
 async function getDate(key) {
@@ -65,4 +81,8 @@ async function getAllKeys() {
   } catch (error) {
     console.log(`Ошибка ${error}`);
   }
+}
+
+function aaa () {
+  return true;
 }

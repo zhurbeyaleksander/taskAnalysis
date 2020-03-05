@@ -3,6 +3,7 @@ import {dispatchStore} from '../utils/StoreUtils';
 const ADD_TASK_LOADING = 'ADD_TASK_LOADING';
 const ADD_TASK_SUCCESS = 'ADD_TASK_SUCCESS';
 const ADD_TASK_ERROR = 'ADD_TASK_ERROR';
+const RESET_PROPS = 'RESET_PROPS';
 
 const initialState = {
   isLoading: false,
@@ -28,6 +29,13 @@ export function addTaskReducer(state = initialState, action) {
     case ADD_TASK_ERROR:
       return {
         ...state,
+        error: action.props.error,
+      };
+
+    case RESET_PROPS:
+      return {
+        isLoading: false,
+        isAddSuccess: false,
         error: null,
       };
 
@@ -50,6 +58,9 @@ const addTaskActionBuilder = {
   [`${addTask.name}Error`]: error => {
     return {
       type: ADD_TASK_ERROR,
+      props: {
+        error: error,
+      },
     };
   },
 };
@@ -59,5 +70,11 @@ export function addTask(taskData) {
 
   return dispatch => {
     dispatchStore(dispatch, 'setData', taskTitle, taskData, addTask.name, addTaskActionBuilder);
+  };
+}
+
+export function resetProps() {
+  return {
+    type: RESET_PROPS,
   };
 }
