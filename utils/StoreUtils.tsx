@@ -44,12 +44,8 @@ async function setData(
 
 async function checkKeyBeforeSave(key: string, dispatch: any, funcName: string) {
   try {
-    let a = 1;
     let compareItem = await AsyncStorage.getItem(key);
     let newValue = JSON.parse(compareItem);
-    console.log('------------------')
-    console.log(newValue);
-    console.log('-------------------')
     if (newValue.taskTitle === key) {
       return Promise.resolve(true);
     }
@@ -81,8 +77,4 @@ async function getAllKeys() {
   } catch (error) {
     console.log(`Ошибка ${error}`);
   }
-}
-
-function aaa () {
-  return true;
 }

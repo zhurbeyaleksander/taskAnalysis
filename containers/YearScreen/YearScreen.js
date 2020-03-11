@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {ScrollView, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {ETypeMonth} from '../../models/appModels';
 import {Button} from '../../components/Button/index';
+import {getData} from '../../store/dataBranch';
 
 class Year extends Component {
   constructor(props) {
@@ -15,8 +16,8 @@ class Year extends Component {
 
   componentDidMount() {
     const year = new Date().getFullYear();
-    this.setState({
-      year: year,
+    this.setState({year: year}, () => {
+      this.props.actions.getData('year', this.state.year);
     });
   }
 
@@ -95,6 +96,16 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: {
+      getData: (period, data) => {
+        dispatch(getData(period, data));
+      },
+    },
+  };
+};
+
 const styles = StyleSheet.create({
   year: {
     flex: 9,
@@ -113,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export const YearScreen = connect(mapStateToProps)(Year);
+export const YearScreen = connect(mapStateToProps, mapDispatchToProps)(Year);

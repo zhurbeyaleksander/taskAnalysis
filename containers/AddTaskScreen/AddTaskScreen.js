@@ -12,13 +12,13 @@ class AddTask extends Component {
     this.state = {
       taskTitle: null,
       daysToDo: {
-        m: 0,
-        t: 0,
-        w: 0,
-        th: 0,
-        f: 0,
-        sa: 0,
-        su: 0,
+        m: {m: 0, dayNumber: 1},
+        t: {t: 0, dayNumber: 2},
+        w: {w: 0, dayNumber: 3},
+        th: {th: 0, dayNumber: 4},
+        f: {f: 0, dayNumber: 5},
+        sa: {sa: 0, dayNumber: 6},
+        su: {su: 0, dayNumber: 0},
       },
       weekDaysSwitch: 0,
       weekendSwitch: 0,
@@ -36,7 +36,7 @@ class AddTask extends Component {
     const newState = cloneDeep(this.state);
     let key;
     if (arrayForCheck.some(el => el === name)) {
-      set(newState, `daysToDo.${name}`, e === 1 ? 0 : 1);
+      set(newState, `daysToDo.${name}.${name}`, e === 1 ? 0 : 1);
       set(newState, 'weekDaysSwitch', 0);
       set(newState, 'weekendSwitch', 0);
     }
@@ -44,7 +44,7 @@ class AddTask extends Component {
     if (name === 'weekDays') {
       for (key in daysToDo) {
         if (key !== 'sa' && key !== 'su') {
-          set(newState, `daysToDo.${key}`, e === 1 ? 0 : 1);
+          set(newState, `daysToDo.${key}.${key}`, e === 1 ? 0 : 1);
         }
       }
       set(newState, 'daysToDo.sa', 0);
@@ -75,37 +75,37 @@ class AddTask extends Component {
       <View style={styles.weekDaysSwitchButtons}>
         <SwitchButton
           onPress={this.pressOnDayButton('m')}
-          isActive={daysToDo.m}>
+          isActive={daysToDo.m.m}>
           ПН
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('t')}
-          isActive={daysToDo.t}>
+          isActive={daysToDo.t.t}>
           ВТ
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('w')}
-          isActive={daysToDo.w}>
+          isActive={daysToDo.w.w}>
           СР
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('th')}
-          isActive={daysToDo.th}>
+          isActive={daysToDo.th.th}>
           ЧТ
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('f')}
-          isActive={daysToDo.f}>
+          isActive={daysToDo.f.f}>
           ПТ
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('sa')}
-          isActive={daysToDo.sa}>
+          isActive={daysToDo.sa.sa}>
           СБ
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('su')}
-          isActive={daysToDo.su}>
+          isActive={daysToDo.su.su}>
           ВС
         </SwitchButton>
       </View>
