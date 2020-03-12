@@ -1,4 +1,5 @@
 import {AsyncStorage} from 'react-native';
+import {find} from 'lodash';
 
 export function getTaskProgress(
   dispatch: any,
@@ -21,7 +22,6 @@ async function getYearProgress(
 ) {
   try {
     const allKeys = await AsyncStorage.getAllKeys();
-    let date = new Date(year, 0, 1);
     const daysInYear = isLeapYear(year) ? 366 : 365;
     let progressResult = {
       totalTask: 0,
@@ -30,12 +30,18 @@ async function getYearProgress(
     };
     allKeys.forEach(i => {
       AsyncStorage.getItem(i).then(result => {
-        console.log(result);
+        const currentTask = JSON.parse(result);
+        for (let j = 1; j <= daysInYear; j++) {
+          let date = new Date(year, 0, j);
+          const curDay = find(currentTask.daysToDo, {dayNumber: date.getDay()});
+          if (curDay.toDo === 1) {
+            progressResult.totalRepeat += 1;
+          }
+        }
+        progressResult.totalTask = allKeys.length;
+        console.log(progressResult);
       });
-      //for (let j = 1; j < daysInYear; j++) {}
     });
-
-    progressResult.totalTask = allKeys.length;
   } catch (error) {
     const errorMsg = 'Ошибка получения данных';
     dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));

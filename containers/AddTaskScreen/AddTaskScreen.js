@@ -12,13 +12,13 @@ class AddTask extends Component {
     this.state = {
       taskTitle: null,
       daysToDo: {
-        m: {m: 0, dayNumber: 1},
-        t: {t: 0, dayNumber: 2},
-        w: {w: 0, dayNumber: 3},
-        th: {th: 0, dayNumber: 4},
-        f: {f: 0, dayNumber: 5},
-        sa: {sa: 0, dayNumber: 6},
-        su: {su: 0, dayNumber: 0},
+        m: {toDo: 0, dayNumber: 1},
+        t: {toDo: 0, dayNumber: 2},
+        w: {toDo: 0, dayNumber: 3},
+        th: {toDo: 0, dayNumber: 4},
+        f: {toDo: 0, dayNumber: 5},
+        sa: {toDo: 0, dayNumber: 6},
+        su: {toDo: 0, dayNumber: 0},
       },
       weekDaysSwitch: 0,
       weekendSwitch: 0,
@@ -36,7 +36,7 @@ class AddTask extends Component {
     const newState = cloneDeep(this.state);
     let key;
     if (arrayForCheck.some(el => el === name)) {
-      set(newState, `daysToDo.${name}.${name}`, e === 1 ? 0 : 1);
+      set(newState, `daysToDo.${name}.toDo`, e === 1 ? 0 : 1);
       set(newState, 'weekDaysSwitch', 0);
       set(newState, 'weekendSwitch', 0);
     }
@@ -44,11 +44,11 @@ class AddTask extends Component {
     if (name === 'weekDays') {
       for (key in daysToDo) {
         if (key !== 'sa' && key !== 'su') {
-          set(newState, `daysToDo.${key}.${key}`, e === 1 ? 0 : 1);
+          set(newState, `daysToDo.${key}.toDo`, e === 1 ? 0 : 1);
         }
       }
-      set(newState, 'daysToDo.sa', 0);
-      set(newState, 'daysToDo.su', 0);
+      set(newState, 'daysToDo.sa.toDo', 0);
+      set(newState, 'daysToDo.su.toDo', 0);
       set(newState, 'weekendSwitch', 0);
       set(newState, 'weekDaysSwitch', e === 1 ? 0 : 1);
     }
@@ -56,12 +56,12 @@ class AddTask extends Component {
     if (name === 'weekend') {
       for (key in daysToDo) {
         if (key !== 'sa' && key !== 'su') {
-          set(newState, `daysToDo.${key}`, 0);
+          set(newState, `daysToDo.${key}.toDo`, 0);
         }
       }
       set(newState, 'weekDaysSwitch', 0);
-      set(newState, 'daysToDo.sa', e === 1 ? 0 : 1);
-      set(newState, 'daysToDo.su', e === 1 ? 0 : 1);
+      set(newState, 'daysToDo.sa.toDo', e === 1 ? 0 : 1);
+      set(newState, 'daysToDo.su.toDo', e === 1 ? 0 : 1);
       set(newState, 'weekendSwitch', e === 1 ? 0 : 1);
     }
 
@@ -75,37 +75,37 @@ class AddTask extends Component {
       <View style={styles.weekDaysSwitchButtons}>
         <SwitchButton
           onPress={this.pressOnDayButton('m')}
-          isActive={daysToDo.m.m}>
+          isActive={daysToDo.m.toDo}>
           ПН
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('t')}
-          isActive={daysToDo.t.t}>
+          isActive={daysToDo.t.toDo}>
           ВТ
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('w')}
-          isActive={daysToDo.w.w}>
+          isActive={daysToDo.w.toDo}>
           СР
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('th')}
-          isActive={daysToDo.th.th}>
+          isActive={daysToDo.th.toDo}>
           ЧТ
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('f')}
-          isActive={daysToDo.f.f}>
+          isActive={daysToDo.f.toDo}>
           ПТ
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('sa')}
-          isActive={daysToDo.sa.sa}>
+          isActive={daysToDo.sa.toDo}>
           СБ
         </SwitchButton>
         <SwitchButton
           onPress={this.pressOnDayButton('su')}
-          isActive={daysToDo.su.su}>
+          isActive={daysToDo.su.toDo}>
           ВС
         </SwitchButton>
       </View>
