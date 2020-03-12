@@ -11,11 +11,12 @@ export function getTaskProgress(
   switch (typeOfPeriod) {
     case 'year':
       dispatch((actionBuilder[`${funcName}Loading`] as Function)());
-      getYearProgress(data, funcName, actionBuilder);
+      getYearProgress(dispatch, data, funcName, actionBuilder);
   }
 }
 
 async function getYearProgress(
+  dispatch: any,
   year: number,
   funcName: string,
   actionBuilder: Object,
@@ -28,7 +29,7 @@ async function getYearProgress(
       totalRepeat: 0,
       totalToDo: 0,
     };
-    allKeys.forEach(i => {
+    allKeys.forEach((i, index) => {
       AsyncStorage.getItem(i).then(result => {
         const currentTask = JSON.parse(result);
         for (let j = 1; j <= daysInYear; j++) {
@@ -39,7 +40,9 @@ async function getYearProgress(
           }
         }
         progressResult.totalTask = allKeys.length;
-        console.log(progressResult);
+        if (allKeys.length === index + 1) {
+        dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
+        }
       });
     });
   } catch (error) {

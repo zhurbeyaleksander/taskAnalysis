@@ -1,11 +1,11 @@
 import {getTaskProgress} from '../utils/TasksProgressUtils';
 
-const GET_TASK_PROGRESS_LOADING = 'GET_TASK_PROGRESS';
+const GET_TASK_PROGRESS_LOADING = 'GET_TASK_PROGRESS_LOADING';
 const GET_TASK_PROGRESS_SUCCESS = 'GET_TASK_PROGRESS_SUCCESS';
 const GET_TASK_PROGRESS_ERROR = 'GET_TASK_PROGRESS_ERROR';
 
 const initialState = {
-  isLoading: false,
+  isLoadingData: false,
   isDataGet: false,
   data: null,
   error: null,
@@ -16,13 +16,13 @@ export function taskProgressReducer(state = initialState, action) {
     case GET_TASK_PROGRESS_LOADING:
       return {
         ...state,
-        isLoading: true,
+        isLoadingData: true,
       };
 
     case GET_TASK_PROGRESS_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        isLoadingData: false,
         isDataGet: true,
         data: action.props.data,
       };
@@ -30,7 +30,7 @@ export function taskProgressReducer(state = initialState, action) {
     case GET_TASK_PROGRESS_ERROR:
       return {
         ...state,
-        isLoading: false,
+        isLoadingData: false,
         isDataGet: false,
         error: action.props.error,
       };
@@ -50,7 +50,7 @@ const getDataActionBuilder = {
     return {
       type: GET_TASK_PROGRESS_SUCCESS,
       props: {
-        data: result.data,
+        data: result,
       },
     };
   },

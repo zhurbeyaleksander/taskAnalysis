@@ -77,6 +77,7 @@ class Year extends Component {
   };
 
   render() {
+    const {isLoadingData} = this.props;
     return (
       <View style={styles.content}>
         <View style={styles.year}>
@@ -93,6 +94,8 @@ class Year extends Component {
 const mapStateToProps = state => {
   return {
     isLoading: state.tasksReducer.isLoading,
+    data: state.taskProgressReducer.data,
+    isLoadingData: state.taskProgressReducer.isLoadingData,
   };
 };
 
