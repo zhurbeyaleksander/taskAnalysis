@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import {ScrollView, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {ETypeMonth} from '../../models/appModels';
 import {Button} from '../../components/Button/index';
+import {TaskProgressTable} from '../../components/TaskProgressTable';
+import {Spinner} from '../../components/Spinner';
 import {getData} from '../../store/dataBranch';
 
 class Year extends Component {
@@ -77,9 +79,12 @@ class Year extends Component {
   };
 
   render() {
-    const {isLoadingData} = this.props;
+    const {isLoadingData, data} = this.props;
     return (
       <View style={styles.content}>
+        <View style={styles.taskProgress}>
+          {isLoadingData ? <Spinner /> : <TaskProgressTable data={data} />}
+        </View>
         <View style={styles.year}>
           <ScrollView>{this.renderMonths()}</ScrollView>
         </View>
@@ -111,14 +116,18 @@ const mapDispatchToProps = dispatch => {
 
 const styles = StyleSheet.create({
   year: {
-    flex: 9,
+    flex: 20,
+    margin: 15,
+  },
+  taskProgress: {
+    flex: 1,
     margin: 15,
   },
   content: {
     flex: 1,
   },
   buttonArea: {
-    flex: 1,
+    flex: 2,
     margin: 15,
   },
   threeMonths: {

@@ -3,11 +3,12 @@ import {getTaskProgress} from '../utils/TasksProgressUtils';
 const GET_TASK_PROGRESS_LOADING = 'GET_TASK_PROGRESS_LOADING';
 const GET_TASK_PROGRESS_SUCCESS = 'GET_TASK_PROGRESS_SUCCESS';
 const GET_TASK_PROGRESS_ERROR = 'GET_TASK_PROGRESS_ERROR';
+const RESET_PROPS = 'RESET_PROPS';
 
 const initialState = {
   isLoadingData: false,
   isDataGet: false,
-  data: null,
+  data: {},
   error: null,
 };
 
@@ -33,6 +34,14 @@ export function taskProgressReducer(state = initialState, action) {
         isLoadingData: false,
         isDataGet: false,
         error: action.props.error,
+      };
+
+    case RESET_PROPS:
+      return {
+        isLoadingData: false,
+        isDataGet: false,
+        data: {},
+        error: null,
       };
 
     default:
@@ -67,5 +76,11 @@ const getDataActionBuilder = {
 export function getData(period, data) {
   return dispatch => {
     getTaskProgress(dispatch, period, data, getData.name, getDataActionBuilder);
+  };
+}
+
+export function resetProps() {
+  return {
+    type: RESET_PROPS,
   };
 }

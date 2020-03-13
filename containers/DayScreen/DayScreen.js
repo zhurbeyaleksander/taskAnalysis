@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Text, View, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import {getData, resetProps} from '../../store/dataBranch';
 
 class DayScreenClass extends Component {
   constructor(props) {
@@ -27,9 +28,13 @@ class DayScreenClass extends Component {
 
   componentDidMount() {
     const data = this.props.route.params.data;
-    this.setState({
-      date: data.currentDate,
+    this.setState({date: data.currentDate}, () => {
+      this.props.actions.getData('day', this.state.date);
     });
+  }
+
+  componentWillUnmount() {
+    this.props.actions.resetProps();
   }
 
   renderContent = () => {
@@ -74,4 +79,17 @@ const mapStateToProps = state => {
   };
 };
 
-export const DayScreen = connect(mapStateToProps)(DayScreenClass);
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: {
+      getData: (period, data) => {
+        dispatch(getData(period, data));
+      },
+      resetProps: () => {
+        dispatch(resetProps());
+      },
+    },
+  };
+};
+
+export const DayScreen = connect(mapStateToProps, mapDispatchToProps)(DayScreenClass);
