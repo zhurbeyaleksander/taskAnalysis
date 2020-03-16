@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Text, View, ScrollView} from 'react-native';
+import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {getData, resetProps} from '../../store/dataBranch';
+import {getData, resetProps, getTaskList} from '../../store/dataBranch';
+import {TaskProgressTable} from '../../components/TaskProgressTable';
+import {Spinner} from '../../components/Spinner';
 
 class DayScreenClass extends Component {
   constructor(props) {
@@ -30,6 +32,7 @@ class DayScreenClass extends Component {
     const data = this.props.route.params.data;
     this.setState({date: data.currentDate}, () => {
       this.props.actions.getData('day', this.state.date);
+      this.props.actions.getTaskList(this.state.date);
     });
   }
 
@@ -42,9 +45,9 @@ class DayScreenClass extends Component {
     const currentDay = moment(date).date();
     const currentMonth = moment(date).month();
     return (
-      <View>
-        <Text>{currentDay}</Text>
-        <Text>{monthTitle[currentMonth]}</Text>
+      <View style={styles.dayMonth}>
+        <Text style={styles.day}>{currentDay}</Text>
+        <Text style={styles.month}>{monthTitle[currentMonth]}</Text>
       </View>
     );
   };
@@ -62,11 +65,14 @@ class DayScreenClass extends Component {
   };
 
   render() {
+    const {isLoadingData, data, taskListIndate} = this.props;
     const taskList = [];
     return (
-      <ScrollView>
-        <View>{this.renderContent()}</View>
-        <View>{this.statisticPanel()}</View>
+      <ScrollView style={styles.wrapDay}>
+        {this.renderContent()}
+        <View style={styles.taskProgress}>
+          {isLoadingData ? <Spinner /> : <TaskProgressTable data={data} />}
+        </View>
         <View>{this.taskList(taskList)}</View>
       </ScrollView>
     );
@@ -76,6 +82,10 @@ class DayScreenClass extends Component {
 const mapStateToProps = state => {
   return {
     isLoading: state.tasksReducer.isLoading,
+    data: state.taskProgressReducer.data,
+    isLoadingData: state.taskProgressReducer.isLoadingData,
+    isLoadingTaskListInDate: state.taskProgressReducer.taskProgressReducer,
+    taskListIndate: state.taskProgressReducer.taskListIndate,
   };
 };
 
@@ -88,8 +98,32 @@ const mapDispatchToProps = dispatch => {
       resetProps: () => {
         dispatch(resetProps());
       },
+      getTaskList: day => {
+        dispatch(getTaskList(day));
+      },
     },
   };
 };
+
+const styles = StyleSheet.create({
+  wrapDay: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  dayMonth: {
+    flex: 1,
+  },
+  day: {
+    fontSize: 100,
+    textAlign: 'center',
+  },
+  month: {
+    fontSize: 80,
+    textAlign: 'center',
+  },
+  taskProgress: {
+    margin: 15,
+  },
+});
 
 export const DayScreen = connect(mapStateToProps, mapDispatchToProps)(DayScreenClass);

@@ -1,14 +1,19 @@
-import {getTaskProgress} from '../utils/TasksProgressUtils';
+import {getTaskProgress, getTaskListInDate} from '../utils/TasksProgressUtils';
 
 const GET_TASK_PROGRESS_LOADING = 'GET_TASK_PROGRESS_LOADING';
 const GET_TASK_PROGRESS_SUCCESS = 'GET_TASK_PROGRESS_SUCCESS';
 const GET_TASK_PROGRESS_ERROR = 'GET_TASK_PROGRESS_ERROR';
+const GET_TASKLIST_INDATE_LOADING = 'GET_TASKLIST_INDATE_LOADING';
+const GET_TASKLIST_INDATE_SUCCESS = 'GET_TASKLIST_INDATE_SUCCESS';
+const GET_TASKLIST_INDATE_ERROR = 'GET_TASKLIST_INDATE_ERROR';
 const RESET_PROPS = 'RESET_PROPS';
 
 const initialState = {
   isLoadingData: false,
   isDataGet: false,
   data: {},
+  taskListIndate: [],
+  isLoadingTaskListInDate: false,
   error: null,
 };
 
@@ -20,12 +25,32 @@ export function taskProgressReducer(state = initialState, action) {
         isLoadingData: true,
       };
 
+    case GET_TASKLIST_INDATE_LOADING:
+      return {
+        ...state,
+        isLoadingTaskListInDate: true,
+      };
+
     case GET_TASK_PROGRESS_SUCCESS:
       return {
         ...state,
         isLoadingData: false,
         isDataGet: true,
         data: action.props.data,
+      };
+
+    case GET_TASKLIST_INDATE_SUCCESS:
+      return {
+        ...state,
+        isLoadingTaskListInDate: false,
+        taskListIndate: action.props.data,
+      };
+
+    case GET_TASK_PROGRESS_ERROR:
+      return {
+        ...state,
+        isLoadingTaskListInDate: false,
+        error: action.props.error,
       };
 
     case GET_TASK_PROGRESS_ERROR:
@@ -73,9 +98,39 @@ const getDataActionBuilder = {
   },
 };
 
+const getTaskListActionBuilder = {
+  [`${getTaskList.name}Loading`]: () => {
+    return {
+      type: GET_TASKLIST_INDATE_LOADING,
+    };
+  },
+  [`${getTaskList.name}Success`]: result => {
+    return {
+      type: GET_TASKLIST_INDATE_SUCCESS,
+      props: {
+        data: result,
+      },
+    };
+  },
+  [`${getTaskList.name}Error`]: error => {
+    return {
+      type: GET_TASKLIST_INDATE_ERROR,
+      props: {
+        error: error,
+      },
+    };
+  },
+};
+
 export function getData(period, data) {
   return dispatch => {
     getTaskProgress(dispatch, period, data, getData.name, getDataActionBuilder);
+  };
+}
+
+export function getTaskList(day) {
+  return dispatch => {
+    getTaskListInDate(dispatch, day, getTaskList.name, getTaskListActionBuilder);
   };
 }
 

@@ -136,3 +136,33 @@ async function getDayProgress(
 function isLeapYear(year: number) {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? true : false;
 }
+
+export async function getTaskListInDate(
+  dispatch: any,
+  date: any,
+  funcName: string,
+  actionBuilder: Object,
+) {
+  try {
+    dispatch((actionBuilder[`${funcName}Loading`] as Function)());
+    const allKeys = await AsyncStorage.getAllKeys();
+    let taskList: Array<Object> = [];
+
+    allKeys.forEach((i, index) => {
+      AsyncStorage.getItem(i).then(result => {
+        const currentTask = JSON.parse(result);
+        let dateDay = new Date(date);
+        const curDay = find(currentTask.daysToDo, {dayNumber: dateDay.getDay()});
+        if (curDay.toDo === 1) {
+          taskList.push(currentTask);
+        }
+        if (allKeys.length === index + 1) {
+          dispatch((actionBuilder[`${funcName}Success`] as Function)(taskList));
+        }
+      });
+    });
+  } catch (error) {
+    const errorMsg = 'Ошибка получения данных';
+    dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));
+  }
+}
