@@ -144,7 +144,7 @@ export default class Month extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.monthWrap}>{this.createMonth()}</ScrollView>
+      <View style={styles.monthWrap}>{this.createMonth()}</View>
     );
   }
 }
