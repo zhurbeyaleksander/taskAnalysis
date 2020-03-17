@@ -5,6 +5,7 @@ import moment from 'moment';
 import {getData, resetProps, getTaskList} from '../../store/dataBranch';
 import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
+import {Button} from '../../components/Button';
 
 class DayScreenClass extends Component {
   constructor(props) {
@@ -57,8 +58,20 @@ class DayScreenClass extends Component {
   };
 
   taskList = taskList => {
-    if (taskList.length) {
-      return <Text>Задачи</Text>;
+    if (taskList && taskList.length) {
+      const listView = taskList.map(i => {
+        return (
+          <View style={styles.taskList} key={i.taskTitle}>
+            <View style={styles.taskTitle}>
+              <Text style={styles.taskListText}>{i.taskTitle}</Text>
+            </View>
+            <View style={styles.checkButton}>
+              <Button>Отметить</Button>
+            </View>
+          </View>
+        );
+      });
+      return listView;
     } else {
       return <Text>Список задач пуст</Text>;
     }
@@ -66,14 +79,15 @@ class DayScreenClass extends Component {
 
   render() {
     const {isLoadingData, data, taskListIndate} = this.props;
-    const taskList = [];
     return (
       <ScrollView style={styles.wrapDay}>
         {this.renderContent()}
         <View style={styles.taskProgress}>
           {isLoadingData ? <Spinner /> : <TaskProgressTable data={data} />}
         </View>
-        <View>{this.taskList(taskList)}</View>
+        <ScrollView style={styles.taskListWrap}>
+          {this.taskList(taskListIndate)}
+        </ScrollView>
       </ScrollView>
     );
   }
@@ -123,6 +137,23 @@ const styles = StyleSheet.create({
   },
   taskProgress: {
     margin: 15,
+  },
+  taskListWrap: {
+    margin: 15,
+  },
+  taskList: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  taskListText: {
+    fontSize: 20,
+  },
+  taskTitle: {
+    flex: 2,
+  },
+  checkButton: {
+    flex: 1,
   },
 });
 
