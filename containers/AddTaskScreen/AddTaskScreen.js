@@ -166,6 +166,7 @@ class AddTask extends Component {
       taskTitle: taskTitle,
       daysToDo: daysToDo,
       repeat: repeat,
+      checks: {},
     };
 
     this.props.actions.addTask(data);

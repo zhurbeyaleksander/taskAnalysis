@@ -2,7 +2,13 @@ import React, {Component} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {getData, resetProps, getTaskList} from '../../store/dataBranch';
+import {isEmpty} from 'lodash';
+import {
+  getData,
+  resetProps,
+  getTaskList,
+  addCheck,
+} from '../../store/dataBranch';
 import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
 import {Button} from '../../components/Button';
@@ -30,11 +36,27 @@ class DayScreenClass extends Component {
   }
 
   componentDidMount() {
-    const data = this.props.route.params.data;
-    this.setState({date: data.currentDate}, () => {
+    const data = this.props.route.params
+      ? this.props.route.params.data.currentDate
+      : new Date();
+    this.setState({date: data}, () => {
       this.props.actions.getData('day', this.state.date);
       this.props.actions.getTaskList(this.state.date);
     });
+  }
+
+  componentDidUpdate() {
+    if (isEmpty(this.props.data)) {
+      const date = this.props.route.params
+        ? this.props.route.params.data.currentDate
+        : new Date();
+      this.props.actions.getData('day', date);
+      this.props.actions.getTaskList(date);
+    }
+
+    if (this.props.needReload) {
+      this.props.actions.getTaskList(this.state.date);
+    }
   }
 
   componentWillUnmount() {
@@ -53,20 +75,29 @@ class DayScreenClass extends Component {
     );
   };
 
-  statisticPanel = () => {
-    return <Text>Выполнено Не выполнено Всего</Text>;
-  };
-
   taskList = taskList => {
     if (taskList && taskList.length) {
       const listView = taskList.map(i => {
+        let done = 0;
+        const {date} = this.state;
+        const allChecks = Object.keys(i.checks);
+        allChecks.forEach(i => {
+          if (moment(date).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
+            done += 1;
+          }
+        });
         return (
           <View style={styles.taskList} key={i.taskTitle}>
             <View style={styles.taskTitle}>
               <Text style={styles.taskListText}>{i.taskTitle}</Text>
+              <Text style={styles.taskListText}>
+                ({done} /{i.repeat})
+              </Text>
             </View>
             <View style={styles.checkButton}>
-              <Button>Отметить</Button>
+              <Button onPress={() => this.onPressCheck(i.taskTitle)}>
+                Отметить
+              </Button>
             </View>
           </View>
         );
@@ -75,6 +106,15 @@ class DayScreenClass extends Component {
     } else {
       return <Text>Список задач пуст</Text>;
     }
+  };
+
+  onPressAddButton = () => {
+    this.props.navigation.navigate('AddTask');
+  };
+
+  onPressCheck = taskTitle => {
+    const date = new Date();
+    this.props.actions.addCheck(taskTitle, date);
   };
 
   render() {
@@ -88,6 +128,9 @@ class DayScreenClass extends Component {
         <ScrollView style={styles.taskListWrap}>
           {this.taskList(taskListIndate)}
         </ScrollView>
+        <View style={styles.buttonArea}>
+          <Button onPress={this.onPressAddButton}>Добавить</Button>
+        </View>
       </ScrollView>
     );
   }
@@ -100,6 +143,7 @@ const mapStateToProps = state => {
     isLoadingData: state.taskProgressReducer.isLoadingData,
     isLoadingTaskListInDate: state.taskProgressReducer.taskProgressReducer,
     taskListIndate: state.taskProgressReducer.taskListIndate,
+    needReload: state.taskProgressReducer.needReload,
   };
 };
 
@@ -114,6 +158,9 @@ const mapDispatchToProps = dispatch => {
       },
       getTaskList: day => {
         dispatch(getTaskList(day));
+      },
+      addCheck: (key, date) => {
+        dispatch(addCheck(key, date));
       },
     },
   };
@@ -154,6 +201,10 @@ const styles = StyleSheet.create({
   },
   checkButton: {
     flex: 1,
+  },
+  buttonArea: {
+    flex: 1,
+    margin: 15,
   },
 });
 

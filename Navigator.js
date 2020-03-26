@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 const RootStack = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Year">
+      <Stack.Navigator initialRouteName="Day">
         <Stack.Screen name="Year" component={YearScreen} />
         <Stack.Screen name="Month" component={MonthScreen} />
         <Stack.Screen name="Day" component={DayScreen} />

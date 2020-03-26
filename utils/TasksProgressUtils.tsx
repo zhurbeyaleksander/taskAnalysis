@@ -118,10 +118,9 @@ async function getDayProgress(
         let dateDay = new Date(date);
         const curDay = find(currentTask.daysToDo, {dayNumber: dateDay.getDay()});
         if (curDay.toDo === 1) {
-          progressResult.totalRepeat += 1;
+          progressResult.totalRepeat += currentTask.repeat;
+          progressResult.totalTask += 1;
         }
-        progressResult.totalTask = allKeys.length;
-        console.log(progressResult);
         if (allKeys.length === index + 1) {
           dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
         }
@@ -161,6 +160,25 @@ export async function getTaskListInDate(
         }
       });
     });
+  } catch (error) {
+    const errorMsg = 'Ошибка получения данных';
+    dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));
+  }
+}
+
+export async function addCheckToStorage(
+  dispatch: any,
+  key: string,
+  date: any,
+  funcName: string,
+  actionBuilder: Object,
+) {
+  try {
+    dispatch((actionBuilder[`${funcName}Loading`] as Function)());
+    const newCheck = {checks: {[`${date}`]: 1}};
+
+    await AsyncStorage.mergeItem(key, JSON.stringify(newCheck));
+    dispatch((actionBuilder[`${funcName}Success`] as Function)());
   } catch (error) {
     const errorMsg = 'Ошибка получения данных';
     dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));
