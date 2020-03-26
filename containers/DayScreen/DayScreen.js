@@ -56,6 +56,7 @@ class DayScreenClass extends Component {
 
     if (this.props.needReload) {
       this.props.actions.getTaskList(this.state.date);
+      this.props.actions.getData('day', this.state.date);
     }
   }
 

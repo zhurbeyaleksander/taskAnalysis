@@ -1,5 +1,6 @@
 import {AsyncStorage} from 'react-native';
 import {find} from 'lodash';
+import moment from 'moment';
 
 export function getTaskProgress(
   dispatch: any,
@@ -48,6 +49,12 @@ async function getYearProgress(
             progressResult.totalRepeat += 1;
           }
         }
+        const allChecks = Object.keys(currentTask.checks);
+        allChecks.forEach(i => {
+          if (moment(date).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
+            progressResult.totalToDo += 1;
+          }
+        });
         progressResult.totalTask = allKeys.length;
         if (allKeys.length === index + 1) {
         dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
@@ -87,6 +94,12 @@ async function getMonthProgress(
             progressResult.totalRepeat += 1;
           }
         }
+        const allChecks = Object.keys(currentTask.checks);
+        allChecks.forEach(i => {
+          if (moment(dateMonth).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
+            progressResult.totalToDo += 1;
+          }
+        });
         progressResult.totalTask = allKeys.length;
         if (allKeys.length === index + 1) {
           dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
@@ -121,6 +134,12 @@ async function getDayProgress(
           progressResult.totalRepeat += currentTask.repeat;
           progressResult.totalTask += 1;
         }
+        const allChecks = Object.keys(currentTask.checks);
+        allChecks.forEach(i => {
+          if (moment(dateDay).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
+            progressResult.totalToDo += 1;
+          }
+        });
         if (allKeys.length === index + 1) {
           dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
         }
