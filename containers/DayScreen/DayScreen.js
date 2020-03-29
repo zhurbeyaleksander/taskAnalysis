@@ -9,6 +9,7 @@ import {
   getTaskList,
   addCheck,
 } from '../../store/dataBranch';
+import {setCurrentMonth, resetCurrentMonth} from '../../store/setDateBranch';
 import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
 import {Button} from '../../components/Button';
@@ -42,6 +43,7 @@ class DayScreenClass extends Component {
     this.setState({date: data}, () => {
       this.props.actions.getData('day', this.state.date);
       this.props.actions.getTaskList(this.state.date);
+      this.props.actions.setCurrentMonth(this.state.date);
     });
   }
 
@@ -162,6 +164,9 @@ const mapDispatchToProps = dispatch => {
       },
       addCheck: (key, date) => {
         dispatch(addCheck(key, date));
+      },
+      setCurrentMonth: month => {
+        dispatch(setCurrentMonth(month));
       },
     },
   };

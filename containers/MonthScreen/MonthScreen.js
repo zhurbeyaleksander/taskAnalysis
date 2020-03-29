@@ -8,8 +8,20 @@ import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
 
 class MonthScreenClass extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: null,
+    };
+  }
   componentDidMount() {
-    const {date} = this.props.route.params;
+    const {currentMonth} = this.props;
+    const date = this.props.route.params
+      ? this.props.route.params.date
+      : currentMonth;
+    this.setState({
+      date: date,
+    });
     this.props.actions.getData('month', date);
   }
 
@@ -17,13 +29,18 @@ class MonthScreenClass extends Component {
     this.props.actions.resetProps();
   }
 
+  onPressDay = data => {
+    this.props.navigation.navigate('Day', {data: data});
+  };
+
   render() {
-    const {date, onPress} = this.props.route.params;
+    const {date} = this.state;
     const {data, isLoadingData} = this.props;
     return (
       <View style={styles.wrapMonth}>
         {isLoadingData ? <Spinner /> : <TaskProgressTable data={data} />}
-        <ScrollView><Month date={date} mode={ETypeMonth.BIG} onPress={onPress} /></ScrollView>
+        <ScrollView>
+          <Month date={date} mode={ETypeMonth.BIG} onPress={this.onPressDay} /></ScrollView>
       </View>
     );
   }
@@ -34,6 +51,7 @@ const mapStateToProps = state => {
     isLoading: state.tasksReducer.isLoading,
     data: state.taskProgressReducer.data,
     isLoadingData: state.taskProgressReducer.isLoadingData,
+    currentMonth: state.setDateReducer.currentMonth,
   };
 };
 

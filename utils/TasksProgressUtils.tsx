@@ -16,6 +16,7 @@ export function getTaskProgress(
       break;
 
     case 'month':
+      dispatch((actionBuilder[`${funcName}Loading`] as Function)());
       getMonthProgress(dispatch, data, funcName, actionBuilder);
       break;
 
@@ -51,7 +52,7 @@ async function getYearProgress(
         }
         const allChecks = Object.keys(currentTask.checks);
         allChecks.forEach(i => {
-          if (moment(date).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
+          if (moment(year).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
             progressResult.totalToDo += 1;
           }
         });
@@ -96,7 +97,7 @@ async function getMonthProgress(
         }
         const allChecks = Object.keys(currentTask.checks);
         allChecks.forEach(i => {
-          if (moment(dateMonth).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
+          if (moment(monthDate).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
             progressResult.totalToDo += 1;
           }
         });
