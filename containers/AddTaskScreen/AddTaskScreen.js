@@ -4,7 +4,7 @@ import {View, Text, StyleSheet, TextInput, ScrollView} from 'react-native';
 import {Button} from '../../components/Button';
 import {SwitchButton} from '../../components/Button';
 import {set, cloneDeep} from 'lodash';
-import {addTask, resetProps} from '../../store/addTaskBranch';
+import {addTask, resetProps} from '../../store/branches/addTaskBranch';
 
 class AddTask extends Component {
   constructor(props) {

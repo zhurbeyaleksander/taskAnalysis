@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import {tasksReducer} from './tasksBranch';
-import {addTaskReducer} from './addTaskBranch';
-import {taskProgressReducer} from './dataBranch';
-import {setDateReducer} from './setDateBranch';
+import {tasksReducer} from './branches/tasksBranch';
+import {addTaskReducer} from './branches/addTaskBranch';
+import {taskProgressReducer} from './branches/dataBranch';
+import {setDateReducer} from './branches/setDateBranch';
 
 export default combineReducers({
   tasksReducer,

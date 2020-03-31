@@ -2,7 +2,7 @@ import {
   getTaskProgress,
   getTaskListInDate,
   addCheckToStorage,
-} from '../utils/TasksProgressUtils';
+} from '../../utils/TasksProgressUtils';
 
 const GET_TASK_PROGRESS_LOADING = 'GET_TASK_PROGRESS_LOADING';
 const GET_TASK_PROGRESS_SUCCESS = 'GET_TASK_PROGRESS_SUCCESS';

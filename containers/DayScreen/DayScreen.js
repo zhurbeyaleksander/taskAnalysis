@@ -8,8 +8,11 @@ import {
   resetProps,
   getTaskList,
   addCheck,
-} from '../../store/dataBranch';
-import {setCurrentMonth, resetCurrentMonth} from '../../store/setDateBranch';
+} from '../../store/branches/dataBranch';
+import {
+  setCurrentMonth,
+  resetCurrentMonth,
+} from '../../store/branches/setDateBranch';
 import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
 import {Button} from '../../components/Button';

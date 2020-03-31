@@ -3,7 +3,7 @@ import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Month} from '../../components/Month/index';
 import {ETypeMonth} from '../../models/appModels';
-import {getData, resetProps} from '../../store/dataBranch';
+import {getData, resetProps} from '../../store/branches/dataBranch';
 import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
 

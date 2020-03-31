@@ -6,7 +6,7 @@ import {ETypeMonth} from '../../models/appModels';
 import {Button} from '../../components/Button/index';
 import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
-import {getData} from '../../store/dataBranch';
+import {getData} from '../../store/branches/dataBranch';
 
 class Year extends Component {
   constructor(props) {

@@ -1,4 +1,4 @@
-import {dispatchStore} from '../utils/StoreUtils';
+import {dispatchStore} from '../../utils/StoreUtils';
 
 const GET_DATA_LOADING = 'GET_DATA_LOADING';
 const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS';

@@ -1,4 +1,4 @@
-import {dispatchStore} from '../utils/StoreUtils';
+import {dispatchStore} from '../../utils/StoreUtils';
 
 const ADD_TASK_LOADING = 'ADD_TASK_LOADING';
 const ADD_TASK_SUCCESS = 'ADD_TASK_SUCCESS';
