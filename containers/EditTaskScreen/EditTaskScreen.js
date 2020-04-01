@@ -7,6 +7,7 @@ import {set, cloneDeep} from 'lodash';
 import {
   getTask,
   editTask,
+  removeTask,
   resetProps,
 } from '../../store/branches/manageTasksBranch';
 
@@ -15,6 +16,7 @@ class EditTask extends Component {
     super(props);
     this.state = {
       taskTitle: null,
+      firstTitle: null,
       daysToDo: {
         m: {toDo: 0, dayNumber: 1},
         t: {toDo: 0, dayNumber: 2},
@@ -27,6 +29,7 @@ class EditTask extends Component {
       weekDaysSwitch: 0,
       weekendSwitch: 0,
       repeat: 1,
+      checks: {},
     };
   }
 
@@ -39,10 +42,12 @@ class EditTask extends Component {
     if (this.props.editTask !== prevProps.editTask) {
       this.setState({
         taskTitle: editTask['taskTitle'],
+        firstTitle: editTask['taskTitle'],
         daysToDo: editTask.daysToDo,
         repeat: editTask.repeat,
         weekDaysSwitch: editTask.weekDaysSwitch,
         weekendSwitch: editTask.weekendSwitch,
+        checks: editTask.checks,
       });
     }
   }
@@ -182,15 +187,18 @@ class EditTask extends Component {
   };
 
   editTask = () => {
-    const {taskTitle, daysToDo, repeat} = this.state;
+    const {taskTitle, firstTitle, daysToDo, repeat, checks} = this.state;
     const data = {
       taskTitle: taskTitle,
       daysToDo: daysToDo,
       repeat: repeat,
-      checks: {},
+      checks: checks,
     };
 
     this.props.actions.editTask(data, taskTitle);
+    if (taskTitle !== firstTitle) {
+      this.props.actions.removeTask(firstTitle);
+    }
   };
 
   renderMainContent = () => {
@@ -321,6 +329,9 @@ const mapDispatchToProps = dispatch => {
       },
       editTask: (data, key) => {
         dispatch(editTask(data, key));
+      },
+      removeTask: key => {
+        dispatch(removeTask(key));
       },
       resetProps: () => {
         dispatch(resetProps());
