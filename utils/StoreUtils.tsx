@@ -16,6 +16,13 @@ export function dispatchStore(
       break;
     case 'getData':
       getDate(key);
+      break;
+    case 'getAllKeys':
+      getAllKeys(actionBuilder, dispatch, funcName);
+      break;
+    case 'removeData':
+      removeData(actionBuilder, dispatch, funcName, key);
+      break;
   }
 }
 
@@ -31,7 +38,6 @@ async function setData(
     if (isNil(objectFromStorageByKey)) {
       await AsyncStorage.setItem(key, JSON.stringify(value));
       dispatch((actionBuilder[`${funcName}Success`] as Function)());
-      getAllKeys();
     } else {
       const error = 'Задача с таким названием уже существует';
       dispatch((actionBuilder[`${funcName}Error`] as Function)(error));
@@ -68,13 +74,31 @@ async function getDate(key) {
   }
 }
 
-async function getAllKeys() {
+async function getAllKeys(
+  actionBuilder: Object,
+  dispatch: any,
+  funcName: string,
+) {
   try {
     const allKeys = await AsyncStorage.getAllKeys();
-    if (allKeys !== null) {
-      console.log(allKeys);
-    }
+    dispatch((actionBuilder[`${funcName}Success`] as Function)(allKeys));
   } catch (error) {
-    console.log(`Ошибка ${error}`);
+    const errorMsg = 'Ошибка получения данных';
+    dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));
+  }
+}
+
+async function removeData(
+  actionBuilder: Object,
+  dispatch: any,
+  funcName: string,
+  key: string,
+) {
+  try {
+    await AsyncStorage.removeItem(key);
+    dispatch((actionBuilder[`${funcName}Success`] as Function)());
+  } catch (error) {
+    const errorMsg = error;
+    dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));
   }
 }
