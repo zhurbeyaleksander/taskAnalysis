@@ -15,13 +15,16 @@ export function dispatchStore(
       setData(key, value, actionBuilder, dispatch, funcName);
       break;
     case 'getData':
-      getDate(key);
+      getData(actionBuilder, dispatch, funcName, key);
       break;
     case 'getAllKeys':
       getAllKeys(actionBuilder, dispatch, funcName);
       break;
     case 'removeData':
       removeData(actionBuilder, dispatch, funcName, key);
+      break;
+    case 'mergeData':
+      mergeData(actionBuilder, dispatch, funcName, key, value);
       break;
   }
 }
@@ -62,15 +65,19 @@ async function checkKeyBeforeSave(key: string, dispatch: any, funcName: string) 
   return Promise.resolve(true);
 }
 
-async function getDate(key) {
+async function getData(
+  actionBuilder: Object,
+  dispatch: any,
+  funcName: string,
+  key: string,
+) {
   try {
-    const value = await AsyncStorage.getItem(key);
-    console.log(value);
-    if (value !== null) {
-      console.log(value);
-    }
+    const task = await AsyncStorage.getItem(key);
+    const parseTask = JSON.parse(task);
+    dispatch((actionBuilder[`${funcName}Success`] as Function)(parseTask));
   } catch (error) {
-    console.log(`Ошибка ${error}`);
+    const errorMsg = error;
+    dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));
   }
 }
 
@@ -83,7 +90,7 @@ async function getAllKeys(
     const allKeys = await AsyncStorage.getAllKeys();
     dispatch((actionBuilder[`${funcName}Success`] as Function)(allKeys));
   } catch (error) {
-    const errorMsg = 'Ошибка получения данных';
+    const errorMsg = error;
     dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));
   }
 }
@@ -96,6 +103,22 @@ async function removeData(
 ) {
   try {
     await AsyncStorage.removeItem(key);
+    dispatch((actionBuilder[`${funcName}Success`] as Function)());
+  } catch (error) {
+    const errorMsg = error;
+    dispatch((actionBuilder[`${funcName}Error`] as Function)(errorMsg));
+  }
+}
+
+async function mergeData(
+  actionBuilder: Object,
+  dispatch: any,
+  funcName: string,
+  key: string,
+  data: Object,
+) {
+  try {
+    await AsyncStorage.mergeItem(key, JSON.stringify(data));
     dispatch((actionBuilder[`${funcName}Success`] as Function)());
   } catch (error) {
     const errorMsg = error;

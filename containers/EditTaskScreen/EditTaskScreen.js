@@ -4,9 +4,13 @@ import {View, Text, StyleSheet, TextInput, ScrollView} from 'react-native';
 import {Button} from '../../components/Button';
 import {SwitchButton} from '../../components/Button';
 import {set, cloneDeep} from 'lodash';
-import {addTask, resetProps} from '../../store/branches/addTaskBranch';
+import {
+  getTask,
+  editTask,
+  resetProps,
+} from '../../store/branches/manageTasksBranch';
 
-class AddTask extends Component {
+class EditTask extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +28,23 @@ class AddTask extends Component {
       weekendSwitch: 0,
       repeat: 1,
     };
+  }
+
+  componentDidMount() {
+    this.props.actions.getTask(this.props.route.params.key);
+  }
+
+  componentDidUpdate(prevProps) {
+    const {editTask} = this.props;
+    if (this.props.editTask !== prevProps.editTask) {
+      this.setState({
+        taskTitle: editTask['taskTitle'],
+        daysToDo: editTask.daysToDo,
+        repeat: editTask.repeat,
+        weekDaysSwitch: editTask.weekDaysSwitch,
+        weekendSwitch: editTask.weekendSwitch,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -160,24 +181,16 @@ class AddTask extends Component {
     });
   };
 
-  addTask = () => {
-    const {
-      taskTitle,
-      daysToDo,
-      repeat,
-      weekDaysSwitch,
-      weekendSwitch,
-    } = this.state;
+  editTask = () => {
+    const {taskTitle, daysToDo, repeat} = this.state;
     const data = {
       taskTitle: taskTitle,
       daysToDo: daysToDo,
-      weekDaysSwitch: weekDaysSwitch,
-      weekendSwitch: weekendSwitch,
       repeat: repeat,
       checks: {},
     };
 
-    this.props.actions.addTask(data);
+    this.props.actions.editTask(data, taskTitle);
   };
 
   renderMainContent = () => {
@@ -217,21 +230,21 @@ class AddTask extends Component {
             </View>
           </View>
           <View style={styles.addButton}>
-            <Button onPress={this.addTask}>Добавить</Button>
+            <Button onPress={this.editTask}>Редактировать</Button>
           </View>
         </View>
       </ScrollView>
     );
   };
 
-  successAdd = () => {
-    return <Text>Задача успешно добавлена в список</Text>;
+  successEdit = () => {
+    return <Text>Задача успешно отредактированна</Text>;
   };
 
   render() {
-    const {isAddSuccess} = this.props;
+    const {isEdit} = this.props;
 
-    return isAddSuccess ? this.successAdd() : this.renderMainContent();
+    return isEdit ? this.successEdit() : this.renderMainContent();
   }
 }
 
@@ -294,17 +307,20 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    isLoading: state.addTaskReducer.isLoading,
-    isAddSuccess: state.addTaskReducer.isAddSuccess,
-    error: state.addTaskReducer.error,
+    editTask: state.manageTaskReducer.editTask,
+    isEdit: state.manageTaskReducer.isEdit,
+    error: state.manageTaskReducer.error,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      addTask: taskData => {
-        dispatch(addTask(taskData));
+      getTask: key => {
+        dispatch(getTask(key));
+      },
+      editTask: (data, key) => {
+        dispatch(editTask(data, key));
       },
       resetProps: () => {
         dispatch(resetProps());
@@ -313,4 +329,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export const AddTaskScreen = connect(mapStateToProps, mapDispatchToProps)(AddTask);
+export const EditTaskScreen = connect(mapStateToProps, mapDispatchToProps)(EditTask);

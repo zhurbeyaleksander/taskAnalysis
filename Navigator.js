@@ -8,6 +8,7 @@ import {YearScreen} from './containers/YearScreen';
 import {DayScreen} from './containers/DayScreen';
 import {AddTaskScreen} from './containers/AddTaskScreen';
 import {ManageTaskScreen} from './containers/ManageTaskScreen';
+import {EditTaskScreen} from './containers/EditTaskScreen';
 import {HeaderBar} from './components/HeaderBar';
 import {ETypeLeftHeaderBtn} from './models/appModels';
 
@@ -81,6 +82,21 @@ const RootStack = () => {
           component={ManageTaskScreen}
           options={({navigation}) => ({
             headerTitle: props => <HeaderBar title={'Управление задачами'} />,
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Text>Назад</Text>
+              </TouchableOpacity>
+            ),
+            headerStyle: {
+              backgroundColor: '#B0C4DE',
+            },
+          })}
+        />
+        <Stack.Screen
+          name="EditTask"
+          component={EditTaskScreen}
+          options={({navigation}) => ({
+            headerTitle: props => <HeaderBar title={'Редактирование задачи'} />,
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Text>Назад</Text>

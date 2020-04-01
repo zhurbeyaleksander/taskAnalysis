@@ -24,7 +24,9 @@ class ManageTask extends Component {
     this.props.actions.removeTask(key);
   };
 
-  onPressEditBtn = key => {};
+  onPressEditBtn = key => {
+    this.props.navigation.navigate('EditTask', {key: key});
+  };
 
   renderTaskList = () => {
     const {tasksList} = this.props;
