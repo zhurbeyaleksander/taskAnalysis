@@ -7,6 +7,7 @@ import {Button} from '../../components/Button/index';
 import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
 import {getData} from '../../store/branches/dataBranch';
+import {setCurrentMonth} from '../../store/branches/setDateBranch';
 
 class Year extends Component {
   constructor(props) {
@@ -19,11 +20,12 @@ class Year extends Component {
   componentDidMount() {
     const year = new Date().getFullYear();
     this.setState({year: year}, () => {
-      this.props.actions.getData('year', this.state.year);
+      // this.props.actions.getData('year', this.state.year);
     });
   }
 
   onPress(date) {
+    this.props.actions.setCurrentMonth(date);
     this.props.navigation.navigate('Month', {
       date: date,
       onPress: this.onPressFromMonthComponent,
@@ -82,9 +84,6 @@ class Year extends Component {
     const {isLoadingData, data} = this.props;
     return (
       <View style={styles.content}>
-        <View style={styles.taskProgress}>
-          {isLoadingData ? <Spinner /> : <TaskProgressTable data={data} />}
-        </View>
         <View style={styles.year}>
           <ScrollView>{this.renderMonths()}</ScrollView>
         </View>
@@ -109,6 +108,9 @@ const mapDispatchToProps = dispatch => {
     actions: {
       getData: (period, data) => {
         dispatch(getData(period, data));
+      },
+      setCurrentMonth: month => {
+        dispatch(setCurrentMonth(month));
       },
     },
   };

@@ -11,6 +11,7 @@ import {
 } from '../../store/branches/dataBranch';
 import {
   setCurrentMonth,
+  setCurrentDay,
   resetCurrentMonth,
 } from '../../store/branches/setDateBranch';
 import {TaskProgressTable} from '../../components/TaskProgressTable';
@@ -40,28 +41,25 @@ class DayScreenClass extends Component {
   }
 
   componentDidMount() {
-    const data = this.props.route.params
-      ? this.props.route.params.data.currentDate
-      : new Date();
-    this.setState({date: data}, () => {
-      this.props.actions.getData('day', this.state.date);
-      this.props.actions.getTaskList(this.state.date);
-      this.props.actions.setCurrentMonth(this.state.date);
-    });
+    const date = new Date();
+    const dataForMonthComponent = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.props.actions.getData('day', date);
+    this.props.actions.getTaskList(date);
+    this.props.actions.setCurrentMonth(dataForMonthComponent);
+    this.props.actions.setCurrentDay(date);
   }
 
-  componentDidUpdate() {
-    if (isEmpty(this.props.data)) {
-      const date = this.props.route.params
-        ? this.props.route.params.data.currentDate
-        : new Date();
+  componentDidUpdate(prevProps) {
+    const {currentDay} = this.props;
+    if (this.props.currentDay !== prevProps.currentDay) {
+      const date = currentDay;
       this.props.actions.getData('day', date);
       this.props.actions.getTaskList(date);
     }
 
     if (this.props.needReload) {
-      this.props.actions.getTaskList(this.state.date);
-      this.props.actions.getData('day', this.state.date);
+      this.props.actions.getTaskList(currentDay);
+      this.props.actions.getData('day', currentDay);
     }
   }
 
@@ -70,12 +68,13 @@ class DayScreenClass extends Component {
   }
 
   renderContent = () => {
-    const {date, monthTitle} = this.state;
-    const currentDay = moment(date).date();
-    const currentMonth = moment(date).month();
+    const {monthTitle} = this.state;
+    const {currentDay} = this.props;
+    const day = moment(currentDay).date();
+    const currentMonth = moment(currentDay).month();
     return (
       <View style={styles.dayMonth}>
-        <Text style={styles.day}>{currentDay}</Text>
+        <Text style={styles.day}>{day}</Text>
         <Text style={styles.month}>{monthTitle[currentMonth]}</Text>
       </View>
     );
@@ -85,10 +84,10 @@ class DayScreenClass extends Component {
     if (taskList && taskList.length) {
       const listView = taskList.map(i => {
         let done = 0;
-        const {date} = this.state;
+        const {currentDay} = this.props;
         const allChecks = Object.keys(i.checks);
         allChecks.forEach(i => {
-          if (moment(date).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
+          if (moment(currentDay).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
             done += 1;
           }
         });
@@ -150,6 +149,7 @@ const mapStateToProps = state => {
     isLoadingTaskListInDate: state.taskProgressReducer.taskProgressReducer,
     taskListIndate: state.taskProgressReducer.taskListIndate,
     needReload: state.taskProgressReducer.needReload,
+    currentDay: state.setDateReducer.currentDay,
   };
 };
 
@@ -170,6 +170,9 @@ const mapDispatchToProps = dispatch => {
       },
       setCurrentMonth: month => {
         dispatch(setCurrentMonth(month));
+      },
+      setCurrentDay: day => {
+        dispatch(setCurrentDay(day));
       },
     },
   };

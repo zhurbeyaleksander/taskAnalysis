@@ -37,7 +37,3 @@ export function tasksReducer(state = initialState, action) {
       return state;
   }
 }
-
-export function getYearData() {
-  console.log('Что-то произошло');
-}

@@ -13,6 +13,7 @@ const GET_TASKLIST_INDATE_ERROR = 'GET_TASKLIST_INDATE_ERROR';
 const ADD_CHECK_LOADING = 'ADD_CHECK_LOADING';
 const ADD_CHECK_SUCCESS = 'ADD_CHECK_SUCCESS';
 const ADD_CHECK_ERROR = 'ADD_CHECK_ERROR';
+const NEED_RELOAD_TASKS_LIST = 'NEED_RELOAD_TASK_LIST';
 const RESET_PROPS = 'RESET_PROPS';
 
 const initialState = {
@@ -92,8 +93,15 @@ export function taskProgressReducer(state = initialState, action) {
         error: action.props.error,
       };
 
+    case NEED_RELOAD_TASKS_LIST:
+      return {
+        ...state,
+        needReload: true,
+      };
+
     case RESET_PROPS:
       return {
+        ...state,
         isLoadingData: false,
         isDataGet: false,
         data: {},
@@ -195,5 +203,11 @@ export function addCheck(key, date) {
 export function resetProps() {
   return {
     type: RESET_PROPS,
+  };
+}
+
+export function needReloadTasksList() {
+  return {
+    type: NEED_RELOAD_TASKS_LIST,
   };
 }

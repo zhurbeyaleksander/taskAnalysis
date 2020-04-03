@@ -10,7 +10,6 @@ import {AddTaskScreen} from './containers/AddTaskScreen';
 import {ManageTaskScreen} from './containers/ManageTaskScreen';
 import {EditTaskScreen} from './containers/EditTaskScreen';
 import {HeaderBar} from './components/HeaderBar';
-import {ETypeLeftHeaderBtn} from './models/appModels';
 
 const Stack = createStackNavigator();
 

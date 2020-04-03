@@ -1,8 +1,11 @@
 const SET_MONTH = 'SET_MONTH';
 const RESET_MONTH = 'RESET_MONTH';
+const SET_DAY = 'SET_DAY';
+const RESET_DAY = 'RESET_DAY';
 
 const initialState = {
   currentMonth: null,
+  currentDay: null,
 };
 
 export function setDateReducer(state = initialState, action) {
@@ -17,6 +20,18 @@ export function setDateReducer(state = initialState, action) {
       return {
         ...state,
         currentMonth: null,
+      };
+
+    case SET_DAY:
+      return {
+        ...state,
+        currentDay: action.props.day,
+      };
+
+    case RESET_DAY:
+      return {
+        ...state,
+        currentDay: null,
       };
 
     default:
@@ -38,6 +53,24 @@ export function resetCurrentMonth() {
     type: RESET_MONTH,
     props: {
       month: null,
+    },
+  };
+}
+
+export function setCurrentDay(day) {
+  return {
+    type: SET_DAY,
+    props: {
+      day: day,
+    },
+  };
+}
+
+export function resetCurrentDay() {
+  return {
+    type: RESET_DAY,
+    props: {
+      day: null,
     },
   };
 }
