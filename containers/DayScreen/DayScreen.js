@@ -47,6 +47,7 @@ class DayScreenClass extends Component {
     this.props.actions.getTaskList(date);
     this.props.actions.setCurrentMonth(dataForMonthComponent);
     this.props.actions.setCurrentDay(date);
+    this.focusOnScreenDay = this.props.navigation.addListener('focus', this.focusOnScreenDay);
   }
 
   componentDidUpdate(prevProps) {
@@ -65,7 +66,14 @@ class DayScreenClass extends Component {
 
   componentWillUnmount() {
     this.props.actions.resetProps();
+    this.focusOnScreen();
   }
+
+  focusOnScreenDay = () => {
+    const {currentDay} = this.props;
+    this.props.actions.getTaskList(currentDay);
+    this.props.actions.getData('day', currentDay);
+  };
 
   renderContent = () => {
     const {monthTitle} = this.state;
@@ -95,9 +103,10 @@ class DayScreenClass extends Component {
           <View style={styles.taskList} key={i.taskTitle}>
             <View style={styles.taskTitle}>
               <Text style={styles.taskListText}>{i.taskTitle}</Text>
-              <Text style={styles.taskListText}>
-                ({done} /{i.repeat})
-              </Text>
+              <View style={styles.taskListTasks}>
+                <Text style={styles.taskListDone}>{done}</Text>
+                <Text style={styles.taskListToDo}>{i.repeat}</Text>
+              </View>
             </View>
             <View style={styles.checkButton}>
               <Button onPress={() => this.onPressCheck(i.taskTitle)}>
@@ -125,18 +134,22 @@ class DayScreenClass extends Component {
   render() {
     const {isLoadingData, data, taskListIndate} = this.props;
     return (
-      <ScrollView style={styles.wrapDay}>
-        {this.renderContent()}
-        <View style={styles.taskProgress}>
-          {isLoadingData ? <Spinner /> : <TaskProgressTable data={data} />}
+      <View style={styles.wrapDayComponent}>
+        <View style={styles.dayContent}>
+          <ScrollView style={styles.wrapDay}>
+            {this.renderContent()}
+            <View style={styles.taskProgress}>
+              {<TaskProgressTable data={data} />}
+            </View>
+            <View style={styles.taskListWrap}>
+              {this.taskList(taskListIndate)}
+            </View>
+          </ScrollView>
         </View>
-        <ScrollView style={styles.taskListWrap}>
-          {this.taskList(taskListIndate)}
-        </ScrollView>
         <View style={styles.buttonArea}>
           <Button onPress={this.onPressAddButton}>Добавить</Button>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -179,25 +192,38 @@ const mapDispatchToProps = dispatch => {
 };
 
 const styles = StyleSheet.create({
+  wrapDayComponent: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  dayContent: {
+    flex: 10,
+  },
   wrapDay: {
     flex: 1,
     flexDirection: 'column',
   },
   dayMonth: {
-    flex: 1,
+    flex: 2,
   },
   day: {
-    fontSize: 100,
-    textAlign: 'center',
-  },
-  month: {
     fontSize: 80,
     textAlign: 'center',
+    fontFamily: 'PlayfairDisplay-Medium',
+    color: '#002F55',
+  },
+  month: {
+    fontSize: 60,
+    textAlign: 'center',
+    color: '#474A51',
+    fontFamily: 'Montserrat-Regular',
   },
   taskProgress: {
+    flex: 1,
     margin: 15,
   },
   taskListWrap: {
+    flex: 6,
     margin: 15,
   },
   taskList: {
@@ -206,10 +232,32 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   taskListText: {
-    fontSize: 20,
+    fontSize: 15,
+    flex: 2,
+    flexDirection: 'row',
+    marginLeft: 10,
+  },
+  taskListTasks: {
+    fontSize: 15,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  taskListDone: {
+    height: 30,
+    backgroundColor: '#cccccc',
+    padding: 5,
+    borderRadius: 8,
+  },
+  taskListToDo: {
+    height: 30,
+    backgroundColor: '#B0C4DE',
+    padding: 5,
+    borderRadius: 8,
+    marginLeft: 10,
   },
   taskTitle: {
     flex: 2,
+    flexDirection: 'row',
   },
   checkButton: {
     flex: 1,

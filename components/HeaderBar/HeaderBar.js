@@ -15,6 +15,9 @@ export default class HeaderBar extends Component {
 const styles = StyleSheet.create({
   text: {
     fontSize: 20,
+    color: '#002338',
+    fontFamily: 'Montserrat-Regular',
+    marginLeft: 45,
   },
   headerBarContent: {
     flex: 1,

@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text, StyleSheet, TextInput, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {Button} from '../../components/Button';
 import {
   getTasks,
   removeTask,
   resetProps,
 } from '../../store/branches/manageTasksBranch';
+import {needReloadTasksList} from '../../store/branches/dataBranch';
 
 class ManageTask extends Component {
   componentDidMount() {
     this.props.actions.getTasks();
+    this.focusOnScreenManageTask = this.props.navigation.addListener('focus', this.focusOnScreenManageTask);
   }
 
   componentDidUpdate() {
@@ -19,6 +21,14 @@ class ManageTask extends Component {
       this.props.actions.getTasks();
     }
   }
+
+  componentWillUnmount() {
+    this.focusOnScreenManageTask();
+  }
+
+  focusOnScreenManageTask = () => {
+    this.props.actions.getTasks();
+  };
 
   onPressRemoveBtn = key => {
     this.props.actions.removeTask(key);
@@ -105,6 +115,9 @@ const mapDispatchToProps = dispatch => {
       },
       resetProps: () => {
         dispatch(resetProps());
+      },
+      needReloadTasksList: () => {
+        dispatch(needReloadTasksList());
       },
     },
   };

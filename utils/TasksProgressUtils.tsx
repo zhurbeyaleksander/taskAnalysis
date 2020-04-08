@@ -84,7 +84,11 @@ async function getMonthProgress(
       totalTask: 0,
       totalRepeat: 0,
       totalToDo: 0,
+      percent: 0,
     };
+    if (allKeys.length === 0) {
+      dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
+    }
     allKeys.forEach((i, index) => {
       AsyncStorage.getItem(i).then(result => {
         const currentTask = JSON.parse(result);
@@ -97,11 +101,12 @@ async function getMonthProgress(
         }
         const allChecks = Object.keys(currentTask.checks);
         allChecks.forEach(i => {
-          if (moment(monthDate).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
+          if (moment(monthDate).format('YYYY-MM') === moment(i).format('YYYY-MM')) {
             progressResult.totalToDo += 1;
           }
         });
         progressResult.totalTask = allKeys.length;
+        progressResult.percent = Math.round((progressResult.totalToDo / progressResult.totalRepeat) * 100);
         if (allKeys.length === index + 1) {
           dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
         }
@@ -125,7 +130,11 @@ async function getDayProgress(
       totalTask: 0,
       totalRepeat: 0,
       totalToDo: 0,
+      percent: 0,
     };
+    if (allKeys.length === 0) {
+      dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
+    }
     allKeys.forEach((i, index) => {
       AsyncStorage.getItem(i).then(result => {
         const currentTask = JSON.parse(result);
@@ -141,6 +150,7 @@ async function getDayProgress(
             progressResult.totalToDo += 1;
           }
         });
+        progressResult.percent = Math.round((progressResult.totalToDo / progressResult.totalRepeat) * 100);
         if (allKeys.length === index + 1) {
           dispatch((actionBuilder[`${funcName}Success`] as Function)(progressResult));
         }
@@ -166,7 +176,9 @@ export async function getTaskListInDate(
     dispatch((actionBuilder[`${funcName}Loading`] as Function)());
     const allKeys = await AsyncStorage.getAllKeys();
     let taskList: Array<Object> = [];
-
+    if (allKeys.length === 0) {
+      dispatch((actionBuilder[`${funcName}Success`] as Function)(taskList));
+    }
     allKeys.forEach((i, index) => {
       AsyncStorage.getItem(i).then(result => {
         const currentTask = JSON.parse(result);

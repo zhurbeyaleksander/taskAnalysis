@@ -77,7 +77,6 @@ export function manageTaskReducer(state = initialState, action) {
     case RESET_PROPS:
       return {
         ...state,
-        tasksList: [],
         error: null,
         needReload: false,
         editTask: null,

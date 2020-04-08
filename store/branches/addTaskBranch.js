@@ -3,7 +3,7 @@ import {dispatchStore} from '../../utils/StoreUtils';
 const ADD_TASK_LOADING = 'ADD_TASK_LOADING';
 const ADD_TASK_SUCCESS = 'ADD_TASK_SUCCESS';
 const ADD_TASK_ERROR = 'ADD_TASK_ERROR';
-const RESET_PROPS = 'RESET_PROPS';
+const RESET_PROPS_ADD_TASK = 'RESET_PROPS_ADD_TASK';
 
 const initialState = {
   isLoading: false,
@@ -32,7 +32,7 @@ export function addTaskReducer(state = initialState, action) {
         error: action.props.error,
       };
 
-    case RESET_PROPS:
+    case RESET_PROPS_ADD_TASK:
       return {
         isLoading: false,
         isAddSuccess: false,
@@ -75,6 +75,6 @@ export function addTask(taskData) {
 
 export function resetProps() {
   return {
-    type: RESET_PROPS,
+    type: RESET_PROPS_ADD_TASK,
   };
 }
