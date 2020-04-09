@@ -118,7 +118,7 @@ export default class Month extends Component {
         return (
           <TouchableOpacity onPress={() => this.onPress(i)}>
             <Day
-              key={index}
+              key={i.dayNumber}
               style={style}
               date={i.dayNumber}
               mode={mode}
@@ -129,7 +129,7 @@ export default class Month extends Component {
       } else {
         return (
           <Day
-            key={index}
+            key={i.dayNumber}
             style={style}
             date={i.dayNumber}
             mode={mode}

@@ -93,6 +93,8 @@ class DayScreenClass extends Component {
       const listView = taskList.map(i => {
         let done = 0;
         const {currentDay} = this.props;
+        const today = new Date();
+        const isToday = moment(today).format('YYYY-MM-DD') === moment(currentDay).format('YYYY-MM-DD');
         const allChecks = Object.keys(i.checks);
         allChecks.forEach(i => {
           if (moment(currentDay).format('YYYY-MM-DD') === moment(i).format('YYYY-MM-DD')) {
@@ -108,11 +110,13 @@ class DayScreenClass extends Component {
                 <Text style={styles.taskListToDo}>{i.repeat}</Text>
               </View>
             </View>
-            <View style={styles.checkButton}>
-              <Button onPress={() => this.onPressCheck(i.taskTitle)}>
-                Отметить
-              </Button>
-            </View>
+            {isToday && (
+              <View style={styles.checkButton}>
+                <Button onPress={() => this.onPressCheck(i.taskTitle)}>
+                  Отметить
+                </Button>
+              </View>
+            )}
           </View>
         );
       });
