@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity
+} from 'react-native';
 import {Button} from '../../components/Button';
 import {
   getTasks,
@@ -44,34 +51,36 @@ class ManageTask extends Component {
     if (tasksList.length) {
       const tasksListView = tasksList.map(i => {
         return (
-          <View key={i} style={styles.wrapTasks}>
-            <View style={styles.task}>
-              <View style={styles.taskTitle}>
-                <Text>{i}</Text>
-              </View>
-              <View style={styles.editButton}>
-                <Button onPress={() => this.onPressEditBtn(i)}>
-                  Редактировать
-                </Button>
-              </View>
-              <View style={styles.removeButton}>
-                <Button onPress={() => this.onPressRemoveBtn(i)}>X</Button>
-              </View>
+          <View key={i} style={styles.task}>
+            <View style={styles.taskTitle}>
+              <Text>{i}</Text>
+            </View>
+            <View style={styles.editButton}>
+              <Button onPress={() => this.onPressEditBtn(i)}>
+                Редактировать
+              </Button>
+            </View>
+            <View style={styles.removeButton}>
+              <TouchableOpacity onPress={() => this.onPressRemoveBtn(i)}>
+                <Image source={require('../../assets/img/remove_.png')} />
+              </TouchableOpacity>
             </View>
           </View>
         );
       });
       return tasksListView;
     } else {
-      return <Text>Список задач пуст</Text>;
+      return (
+        <View style={styles.wrapTasks}>
+          <Text>Список задач пуст</Text>
+        </View>
+      );
     }
   };
 
   render() {
     return (
-      <ScrollView>
-        {this.renderTaskList()}
-      </ScrollView>
+      <ScrollView style={styles.wrapTasks}>{this.renderTaskList()}</ScrollView>
     );
   }
 }
@@ -80,19 +89,24 @@ const styles = StyleSheet.create({
   wrapTasks: {
     flex: 1,
     flexDirection: 'column',
+    margin: 15,
   },
   task: {
     flex: 1,
     flexDirection: 'row',
+    marginBottom: 10,
   },
   taskTitle: {
     flex: 2,
+    marginTop: 3,
   },
   editButton: {
     flex: 2,
   },
   removeButton: {
     flex: 1,
+    marginLeft: 10,
+    paddingLeft: 30,
   },
 });
 

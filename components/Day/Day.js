@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 2,
     fontSize: 10,
+    borderRadius: 5,
   },
   todayBig: {
     backgroundColor: '#B0C4DE',
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 2,
     fontSize: 20,
+    borderRadius: 5,
   },
   noMarkedSmall: {
     backgroundColor: '#ffffff',

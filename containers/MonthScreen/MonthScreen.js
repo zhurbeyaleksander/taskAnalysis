@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, ScrollView, StyleSheet} from 'react-native';
+import {View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Month} from '../../components/Month/index';
 import {ETypeMonth} from '../../models/appModels';
@@ -11,6 +11,7 @@ import {
 import {TaskProgressTable} from '../../components/TaskProgressTable';
 import {Spinner} from '../../components/Spinner';
 import {setCurrentDay} from '../../store/branches/setDateBranch';
+import {Button} from '../../components/Button';
 
 class MonthScreenClass extends Component {
   constructor(props) {
@@ -48,13 +49,27 @@ class MonthScreenClass extends Component {
     this.props.navigation.navigate('Day', {data: data});
   };
 
+  onPressAddButton = () => {
+    this.props.navigation.navigate('AddTask');
+  };
+
   render() {
     const {data, isLoadingData, currentMonth} = this.props;
     return (
       <View style={styles.wrapMonth}>
-        {isLoadingData ? <Spinner /> : <TaskProgressTable data={data} />}
-        <ScrollView>
-          <Month date={currentMonth} mode={ETypeMonth.BIG} onPress={this.onPressDay} /></ScrollView>
+        <View style={styles.month}>
+          {isLoadingData ? <Spinner /> : <TaskProgressTable data={data} />}
+          <ScrollView>
+            <Month
+              date={currentMonth}
+              mode={ETypeMonth.BIG}
+              onPress={this.onPressDay}
+            />
+          </ScrollView>
+        </View>
+        <View style={styles.buttonArea}>
+          <Button onPress={this.onPressAddButton}>Добавить</Button>
+        </View>
       </View>
     );
   }
@@ -91,6 +106,14 @@ const mapDispatchToProps = dispatch => {
 const styles = StyleSheet.create({
   wrapMonth: {
     flex: 1,
+    flexDirection: 'column',
+  },
+  month: {
+    flex: 10,
+  },
+  buttonArea: {
+    flex: 1,
+    margin: 15,
   },
 });
 

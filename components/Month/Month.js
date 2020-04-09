@@ -104,7 +104,10 @@ export default class Month extends Component {
 
     const monthStyle = mode === ETypeMonth.BIG ? get(styles, 'monthTitle') : get(styles, 'monthTitleSmall');
 
-    return [<Text style={monthStyle}>{monthTitle[month]}</Text>, createArrayOfWeeks];
+    return [
+      <Text style={monthStyle}>{monthTitle[month]}</Text>,
+      createArrayOfWeeks,
+    ];
   };
 
   createWeek = week => {
@@ -162,7 +165,10 @@ const styles = StyleSheet.create({
     padding: 1,
   },
   monthTitle: {
-    fontSize: 22,
+    flex: 1,
+    fontSize: 25,
+    fontFamily: 'PermanentMarker-Regular',
+    color: '#002338',
   },
   monthTitleSmall: {
     fontSize: 13,

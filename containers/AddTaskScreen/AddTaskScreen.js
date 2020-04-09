@@ -246,14 +246,14 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   textTaskTitle: {
-    fontSize: 22,
+    fontSize: 16,
   },
   textInput: {
     borderColor: '#333333',
     borderWidth: 1,
     borderRadius: 5,
     marginTop: 20,
-    fontSize: 22,
+    fontSize: 16,
   },
   weekDays: {
     flex: 3,
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   },
   repeatNumber: {
     width: 30,
-    fontSize: 22,
+    fontSize: 16,
     marginTop: 5,
   },
   addButton: {
